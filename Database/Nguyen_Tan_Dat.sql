@@ -2,7 +2,19 @@ USE ASSIGNMENT2
 
 -- DROP TABLE IF EXISTS USERTB;
 
-INSERT INTO USERTB
-VALUES ('SV123', 'edric', '123456', N'Nguyễn Tấn', N'Đạt', NULL, NULL, N'Nữ', NULL, 'Ho Chi Minh', 'Learner');
-
 SELECT * FROM USERTB
+
+GO
+CREATE PROCEDURE uspProductList
+AS
+BEGIN
+    SELECT 
+        product_name, 
+        list_price
+    FROM 
+        production.products
+    ORDER BY 
+        product_name;
+END;
+
+GO
