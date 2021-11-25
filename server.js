@@ -2,23 +2,36 @@ const express = require("express");
 const app = express();
 
 const sql = require("mssql/msnodesqlv8");
-const config = new sql.ConnectionPool({
-    login: 'admin',
-    password: '123456',
-    database: 'ASSIGNMENT2',
-    server: 'MSI',
-    driver: 'msnodesqlv8',
-    options: {
-        trustedConnection: true
-    }
-});
+const config = require('./dbconfig')
+// const config = {
+//     user: 'admin',
+//     password: '123456',
+//     database: 'ASSIGNMENT2',
+//     server: 'MSI',
+//     options: {
+//         trustedConnection: true
+//     }
+// };
+
+// const config = new sql.ConnectionPool({
+//     login: 'admin',
+//     password: '123456',
+//     database: 'ASSIGNMENT2',
+//     server: 'MSI',
+//     driver: 'msnodesqlv8',
+//     options: {
+//         trustedConnection: true
+//     }
+// });
+
+
 
 app.get('/', function (req, res) {
-    config.connect().then(() => {
-        config.request().query('select * from USERTB', (err, result) => {
-            res.send(result);
+    sql.connect(config).then(() => {
+        var request = new sql.Request();
+        request.query('SELECT * FROM USERTB', (err, result) => {
+            res.send(result.recordset);
         })
-        
     }).catch(function(err) {
         console.log(err)
     });
