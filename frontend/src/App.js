@@ -4,7 +4,7 @@ import Header from './Components/Header';
 import Footer from './Components/Footer';
 import {Container} from 'react-bootstrap';
 import HomeScreen from './Screens/HomeScreen';
-import Course from './Components/Course';
+import CourseScreen from './Screens/CourseScreen';
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
         <Container>
           <Routes >
             <Route exact path='/' element={<HomeScreen/>}/>
-            <Route path='/course/:id' element={<Course/>}/>
+            <Route path='/course/:id' element={<CourseScreen/>}/>
           </Routes >
         </Container>
       </main>
