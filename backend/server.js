@@ -16,7 +16,7 @@ app.get('/', function (req, res) {
     });
 });
 
-app.get('/course', function (req, res) {
+app.get('/api/courses', function (req, res) {
     sql.connect(config).then(() => {
         var request = new sql.Request();
         request.query(`SELECT * FROM COURSE`, (err, result) => {
@@ -27,7 +27,7 @@ app.get('/course', function (req, res) {
     });
 });
 
-app.get('/course/:id', function (req, res) {
+app.get('/api/course/:id', function (req, res) {
     sql.connect(config).then(() => {
         var request = new sql.Request();
         request.query(`SELECT * FROM COURSE WHERE Course_ID = ${req.params.id}`, (err, result) => {
