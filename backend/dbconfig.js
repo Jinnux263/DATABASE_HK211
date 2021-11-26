@@ -1,3 +1,6 @@
+const username = process.env.SQL_SERVER_USERNAME;
+const passwd = process.env.SQL_SERVER_PASSWD;
+
 const config = {
   user: "LAPTOP-2KEU49GH\\Nguyen Dat",
   password: "",
@@ -11,14 +14,13 @@ const config = {
 };
 
 // const config = {
-//     login: 'admin',
-//     password: '123456',
+//     login: {username},
+//     password: {passwd},
 //     database: 'ASSIGNMENT2',
 //     server: 'MSI',
 //     driver: 'msnodesqlv8',
 //     options: {
 //         trustedConnection: true
 //     }
-
-// }
+// };
 export default config;
