@@ -1,19 +1,15 @@
-const express = require("express");
+import  express from "express"
+import dotenv from "dotenv"
+
+dotenv.config()
 const app = express();
 
-const sql = require("mssql/msnodesqlv8");
-const config = require('./dbconfig')
+import sql from "mssql/msnodesqlv8.js"
+import config from './dbconfig.js'
 
 
 app.get('/', function (req, res) {
-    sql.connect(config).then(() => {
-        var request = new sql.Request();
-        request.query('SELECT * FROM USERTB', (err, result) => {
-            res.send(result.recordset);
-        })
-    }).catch(function(err) {
-        console.log(err)
-    });
+    res.send("API is running...");
 });
 
 app.get('/api/courses', function (req, res) {
@@ -38,7 +34,9 @@ app.get('/api/course/:id', function (req, res) {
     });
 });
 
+const PORT = process.env.PORT || 3001
 
-app.listen(3001, function() {
-    console. log("express server is running on port 3001");
-});
+app.listen(
+    PORT,
+    console. log(`express server is running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+);

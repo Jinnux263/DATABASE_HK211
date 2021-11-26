@@ -17,7 +17,7 @@ const CourseScreen = (props) => {
         }
 
         fetchCourse()
-    }, [])
+    }, [params.id])
 
     return (
         <>
