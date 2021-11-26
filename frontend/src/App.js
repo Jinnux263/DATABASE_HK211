@@ -5,6 +5,7 @@ import Footer from './Components/Footer';
 import {Container} from 'react-bootstrap';
 import HomeScreen from './Screens/HomeScreen';
 import CourseScreen from './Screens/CourseScreen';
+import LoginScreen from './Screens/LoginScreen';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Routes >
             <Route path='/' element={<HomeScreen/>}/>
             <Route path='/course/:id' element={<CourseScreen/>}/>
+            <Route path='/login' element={<LoginScreen/>}/>
           </Routes >
         </Container>
       </main>
