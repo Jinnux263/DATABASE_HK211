@@ -1,12 +1,23 @@
 import  express from "express"
 import dotenv from "dotenv"
+//import DBconnect from './DBconnect.js';
+import colors from 'colors'
+import config from './dbconfig.js'
+import sql from "mssql/msnodesqlv8.js"
 
 dotenv.config()
 const app = express();
 
-import sql from "mssql/msnodesqlv8.js"
-import config from './dbconfig.js'
+//DBconnect()
 
+
+// app.get('/api/courses', function (req, res) {
+    
+    // });
+    
+    // app.get('/api/course/:id', function (req, res) {
+        //     res.send("ok")
+        // });
 
 app.get('/', function (req, res) {
     res.send("API is running...");
@@ -38,5 +49,5 @@ const PORT = process.env.PORT || 3001
 
 app.listen(
     PORT,
-    console. log(`express server is running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+    console. log(`express server is running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold)
 );
