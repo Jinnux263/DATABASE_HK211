@@ -14,7 +14,7 @@ function App() {
         <Container>
           <Routes >
             <Route exact path='/' element={<HomeScreen/>}/>
-            <Route path='/course/:id' element={<CourseScreen/>}/>
+            <Route path='/course/:Course_ID' element={<CourseScreen id={5000002}/>}/>
           </Routes >
         </Container>
       </main>

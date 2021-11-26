@@ -1,13 +1,26 @@
-import React from 'react'
+import axios from 'axios';
+import React, {useState, useEffect} from 'react'
 import { Col, Image, ListGroup, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Rating from '../Components/Rating'
 
 
-const CourseScreen = () => {
+const CourseScreen = (props) => {
+    const [course, setCourse] = useState({})
+    
+    useEffect(() => {
+        const fetchCourse = async () => {
+            const {data} = await axios.get(`/api/course/${props.id}`)
+            //console.log(data[0])
+            setCourse(data[0])
+        }
+
+        fetchCourse()
+    }, [])
+
     return (
         <>
-            <Link className='btn btn-dark my-3'>Go back</Link>
+            <Link to="/" className='btn btn-dark my-3'>Go back</Link>
             <Row>
                 <Col md = {6}>
                     <Image src = ""/>
@@ -15,10 +28,10 @@ const CourseScreen = () => {
                 <Col md = {3}>
                     <ListGroup>
                         <ListGroup.Item>
-                            <h2>Name</h2>
+                            <h2>{course.Course_name}</h2>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            <Rating value={1} text = 'test'/>
+                            <Rating value={4.5} text = 'test'/>
                         </ListGroup.Item>
                     </ListGroup>
                 </Col>
