@@ -1,16 +1,17 @@
 import axios from 'axios';
 import React, {useState, useEffect} from 'react'
 import { Col, Image, ListGroup, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Rating from '../Components/Rating'
 
 
 const CourseScreen = (props) => {
+    const params = useParams();
     const [course, setCourse] = useState({})
     
     useEffect(() => {
         const fetchCourse = async () => {
-            const {data} = await axios.get(`/api/course/${props.id}`)
+            const {data} = await axios.get(`/api/course/${params.id}`)
             //console.log(data[0])
             setCourse(data[0])
         }
