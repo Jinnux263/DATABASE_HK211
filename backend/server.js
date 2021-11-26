@@ -8,9 +8,6 @@ import sql from "mssql/msnodesqlv8.js";
 dotenv.config();
 const app = express();
 
-import sql from "mssql/msnodesqlv8.js";
-import config from "./dbconfig.js";
-
 app.get("/", function (req, res) {
   res.send("API is running...");
 });
