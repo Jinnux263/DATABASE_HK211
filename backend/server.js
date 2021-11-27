@@ -44,7 +44,7 @@ app.get("/api/course/:id", function (req, res) {
 });
 
 app.use(express.json());
-app.use(express.urlencoded());
+//app.use(express.urlencoded());
 
 app.post("/api/course/insert", function (req, res) {
   console.log("Server Inserting...")
@@ -53,13 +53,8 @@ app.post("/api/course/insert", function (req, res) {
     .then(() => {
       var request = new sql.Request();
       const items = req.body.items
-      //console.log(items.Course_ID)
-      
-      //const msg = `INSERT INTO COURSE VALUES ('5000013','Asylum and Refugee Law','Law','Intermediate','What is asylum? What is the principle of non-refoulement? Who should be recognized and protected as a refugee? These notions are complex. Learn to understand and apply them!','Free','1000004');`
-      //console.log(`INSERT INTO COURSE VALUES ('${items.Course_ID}', '${items.Course_name}', '${items.SPECIALIZATION}','${items.Level}','${items.Description}','${items.Fee}','${items.Admin_ID}');`)
-      //console.log(msg2)
-      
       const msg = `INSERT INTO COURSE VALUES ('${items.Course_ID}','${items.Course_name}','${items.SPECIALIZATION}','${items.Level}','${items.Description}','${items.Fee}','${items.Admin_ID}');`
+      //console.log(msg)
       request.query(msg);
       console.log("Server Insert success!")
     })
