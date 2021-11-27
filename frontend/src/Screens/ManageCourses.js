@@ -82,8 +82,8 @@ const ManageCourses = () => {
 
   return (
     <div>
-      <Table class="table table-striped table-hover">
-        <thead class="table-dark">
+      <Table className="table table-striped table-hover">
+        <thead className="table-dark">
           <tr>
             <th>Course ID</th>
             <th>Course Name</th>
@@ -96,7 +96,7 @@ const ManageCourses = () => {
         </thead>
         <tbody>
           {courses.map((course) => (
-            <tr>
+            <tr key = {course.Course_ID}>
               <td>{course.Course_ID}</td>
               <td>{course.Course_name}</td>
               <td>{course.SPECIALIZATION}</td>
@@ -163,7 +163,7 @@ const ManageCourses = () => {
 
         <button
           type="submit"
-          class="btn btn-secondary btn-sm"
+          className="btn btn-secondary btn-sm"
           //onClick={insertCourse}
         >
           Add
