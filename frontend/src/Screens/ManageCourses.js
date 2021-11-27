@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Button, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { nanoid } from "nanoid";
 
 const ManageCourses = () => {
@@ -26,6 +25,7 @@ const ManageCourses = () => {
       Fee: item.Fee,
       Admin_ID: item.Admin_ID,
     };
+    //console.log("Inserting...")
     axios
       .post("api/course/insert", { items })
       .then((response) => {
@@ -66,8 +66,8 @@ const ManageCourses = () => {
     };
 
     const newCourses = [...courses, newCourse];
-    setCourse(newCourses);
     insertCourse(newCourse);
+    setCourse(newCourses);
   };
 
   useEffect(() => {
@@ -164,7 +164,7 @@ const ManageCourses = () => {
         <button
           type="submit"
           class="btn btn-secondary btn-sm"
-          //   onClick={insertCourse}
+          //onClick={insertCourse}
         >
           Add
         </button>
