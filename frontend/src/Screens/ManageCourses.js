@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { nanoid } from "nanoid";
+import editableRow from "../Components/editableRow";
+import readonlyRow from "../Components/readonlyRow";
 
 const ManageCourses = () => {
   const [courses, setCourse] = useState([]);
@@ -15,29 +17,17 @@ const ManageCourses = () => {
     Admin_ID: "",
   });
 
-  const insertCourse = (item) => {
-    const items = {
-      Course_ID: item.Course_ID,
-      Course_name: item.Course_name,
-      SPECIALIZATION: item.SPECIALIZATION,
-      Level: item.Level,
-      Description: item.Description,
-      Fee: item.Fee,
-      Admin_ID: item.Admin_ID,
-    };
-    //console.log("Inserting...")
-    axios
-      .post("/api/courses/insert", { item })
-      .then((res) => {
-        if (res) {
-          this.reset();
-          alert(res.data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const [editData, setEditData] = useState({
+    Course_ID: "",
+    Course_name: "",
+    SPECIALIZATION: "",
+    Level: "",
+    Description: "",
+    Fee: 0,
+    Admin_ID: "",
+  });
+
+  const [editCourseID, setEditCourseID] = useState(null);
 
   const handleAddCourse = (event) => {
     event.preventDefault();
@@ -49,6 +39,18 @@ const ManageCourses = () => {
     newFormData[fieldName] = fieldValue;
 
     setAddCourse(newFormData);
+  };
+
+  const handleEditData = (event) => {
+    event.preventDefault();
+
+    const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+
+    const newFormData = { ...addCourse };
+    newFormData[fieldName] = fieldValue;
+
+    setEditData(newFormData);
   };
 
   const handleAddCourseSubmit = (event) => {
@@ -79,6 +81,20 @@ const ManageCourses = () => {
 
     fetchCourses();
   }, []);
+
+  const insertCourse = (item) => {
+    axios
+      .post("/api/courses/insert", { item })
+      .then((res) => {
+        if (res) {
+          this.reset();
+          alert(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div>
