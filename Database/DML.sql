@@ -190,14 +190,14 @@ INSERT INTO SUPPORT VALUES ('Please help me to make a payment to this course','2
 INSERT INTO SUPPORT VALUES ('Please help me to receive payment to this course','2021-05-04','2021-05-06','2000010','1000002');
 
 --COURSE
-INSERT INTO COURSE VALUES ('5000001','Programing for everyone','Computer Science','Introductory','This course aims to teach everyone the basics of programming computers using Python.','100$','1000001');
-INSERT INTO COURSE VALUES ('5000002','Advance programing in C++','Computer Science','Advanced','This is a self-paced course that continues in the development of C++ programming skills.','120$','1000002');
-INSERT INTO COURSE VALUES ('5000003','The Chemistry of life','Chemistry','Introductory','This course is designed to build foundational skills in chemistry, providing learners with the necessary prerequisite knowledge for advanced chemistry courses.','50$','1000003');
-INSERT INTO COURSE VALUES ('5000004','Introduction to Geochemistry','Chemistry','Intermediate','The goal of this course is to apply chemical principles to understand the natural (non-living) world around us and appreciate its complexity.','70$','1000005');
-INSERT INTO COURSE VALUES ('5000005','Microeconomic','Economic','Introductory','This economics course is an introduction to basic microeconomic.','100$','1000004');
-INSERT INTO COURSE VALUES ('5000006','Behavioural Economics','Economic','Intermediate','This course builds on much of the fascinating work in the area of behavioral economics.','200$','1000003');
-INSERT INTO COURSE VALUES ('5000007','Circuits for Beginners','Electronic','Introductory','This course introduces DC (direct current) circuits and is typically the first course an undergraduate student in electrical engineering would take.','70$','1000002');
-INSERT INTO COURSE VALUES ('5000008','Asylum and Refugee Law','Law','Intermediate','What is asylum? What is the principle of non-refoulement? Who should be recognized and protected as a refugee? These notions are complex. Learn to understand and apply them!','Free','1000004');
+INSERT INTO COURSE VALUES ('5000001','Programing for everyone','Computer Science','Introductory','This course aims to teach everyone the basics of programming computers using Python.',100,'1000001');
+INSERT INTO COURSE VALUES ('5000002','Advance programing in C++','Computer Science','Advanced','This is a self-paced course that continues in the development of C++ programming skills.',120,'1000002');
+INSERT INTO COURSE VALUES ('5000003','The Chemistry of life','Chemistry','Introductory','This course is designed to build foundational skills in chemistry, providing learners with the necessary prerequisite knowledge for advanced chemistry courses.',50,'1000003');
+INSERT INTO COURSE VALUES ('5000004','Introduction to Geochemistry','Chemistry','Intermediate','The goal of this course is to apply chemical principles to understand the natural (non-living) world around us and appreciate its complexity.',70,'1000005');
+INSERT INTO COURSE VALUES ('5000005','Microeconomic','Economic','Introductory','This economics course is an introduction to basic microeconomic.',100,'1000004');
+INSERT INTO COURSE VALUES ('5000006','Behavioural Economics','Economic','Intermediate','This course builds on much of the fascinating work in the area of behavioral economics.',200,'1000003');
+INSERT INTO COURSE VALUES ('5000007','Circuits for Beginners','Electronic','Introductory','This course introduces DC (direct current) circuits and is typically the first course an undergraduate student in electrical engineering would take.',70,'1000002');
+INSERT INTO COURSE VALUES ('5000008','Asylum and Refugee Law','Law','Intermediate','What is asylum? What is the principle of non-refoulement? Who should be recognized and protected as a refugee? These notions are complex. Learn to understand and apply them!',0,'1000004');
 
 
 --CREAT_COURSE

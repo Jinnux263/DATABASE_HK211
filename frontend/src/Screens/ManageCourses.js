@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Button, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { nanoid } from "nanoid";
 
 const ManageCourses = () => {
@@ -12,7 +11,7 @@ const ManageCourses = () => {
     SPECIALIZATION: "",
     Level: "",
     Description: "",
-    Fee: "",
+    Fee: 0,
     Admin_ID: "",
   });
 
@@ -26,10 +25,9 @@ const ManageCourses = () => {
       Fee: item.Fee,
       Admin_ID: item.Admin_ID,
     };
-    // console.log("pass item success");
-    console.log(item);
+    //console.log("Inserting...")
     axios
-      .get("http://localhost:3001/api/course/insert", { item })
+      .post("/api/courses/insert", { item })
       .then((res) => {
         if (res) {
           this.reset();
@@ -68,6 +66,7 @@ const ManageCourses = () => {
     };
 
     const newCourses = [...courses, newCourse];
+    insertCourse(newCourse);
     setCourse(newCourses);
   };
 
@@ -83,8 +82,8 @@ const ManageCourses = () => {
 
   return (
     <div>
-      <Table class="table table-striped table-hover">
-        <thead class="table-dark">
+      <Table className="table table-striped table-hover">
+        <thead className="table-dark">
           <tr>
             <th>Course ID</th>
             <th>Course Name</th>
@@ -97,7 +96,7 @@ const ManageCourses = () => {
         </thead>
         <tbody>
           {courses.map((course) => (
-            <tr>
+            <tr key={course.Course_ID}>
               <td>{course.Course_ID}</td>
               <td>{course.Course_name}</td>
               <td>{course.SPECIALIZATION}</td>
@@ -164,8 +163,8 @@ const ManageCourses = () => {
 
         <button
           type="submit"
-          class="btn btn-secondary btn-sm"
-          //   onClick={insertCourse}
+          className="btn btn-secondary btn-sm"
+          //onClick={insertCourse}
         >
           Add
         </button>

@@ -117,7 +117,7 @@ CREATE TABLE COURSE
 	SPECIALIZATION VARCHAR(30),
 	Level VARCHAR(15) CHECK(Level IN ('Introductory', 'Intermediate', 'Advanced')),
 	Description VARCHAR(255),
-	Fee VARCHAR(15),
+	Fee FLOAT,
 	Admin_ID CHAR(7),
 	CONSTRAINT FK_course_admin FOREIGN KEY (Admin_ID)
 				REFERENCES ADMINISTRATOR (User_ID)
