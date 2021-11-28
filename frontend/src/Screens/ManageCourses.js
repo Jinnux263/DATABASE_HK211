@@ -26,12 +26,14 @@ const ManageCourses = () => {
       Fee: item.Fee,
       Admin_ID: item.Admin_ID,
     };
+    // console.log("pass item success");
+    console.log(item);
     axios
-      .post("api/course/insert", { items })
-      .then((response) => {
-        if (response) {
+      .get("http://localhost:3001/api/course/insert", { item })
+      .then((res) => {
+        if (res) {
           this.reset();
-          alert(response.data);
+          alert(res.data);
         }
       })
       .catch((error) => {
@@ -67,7 +69,6 @@ const ManageCourses = () => {
 
     const newCourses = [...courses, newCourse];
     setCourse(newCourses);
-    insertCourse(newCourse);
   };
 
   useEffect(() => {
