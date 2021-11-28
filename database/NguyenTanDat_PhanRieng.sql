@@ -50,4 +50,41 @@ EXEC add_question_to_quiz @Course_ID = '5000001', @Lecture_Number = 1, @Quizz_ID
 
 SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
 
--- Trigger
+-- Trigger1
+GO
+DROP TRIGGER IF EXISTS trigger_name;
+
+GO
+CREATE TRIGGER trigger_name
+ON USERTB
+AFTER  INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
+END;
+
+-- Trigger2
+GO
+DROP TRIGGER IF EXISTS trigger_name;
+
+GO
+CREATE TRIGGER trigger_name
+ON USERTB
+AFTER  INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
+END;
+
+-- Trigger3
+GO
+DROP TRIGGER IF EXISTS trigger_name;
+
+GO
+CREATE TRIGGER trigger_name
+ON USERTB
+AFTER  INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
+END;
