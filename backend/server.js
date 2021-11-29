@@ -83,7 +83,7 @@ app.post("/api/myCourse/remove/:id", function (req, res) {
       const items = req.body;
       //console.log(items)
       const msg = `DELETE FROM ENROLL_COURSE WHERE ENROLL_COURSE.Course_ID = '${items.Course_ID}' AND ENROLL_COURSE.Learner_ID = '${req.params.id}';`;
-      console.log(msg)
+      //console.log(msg)
       request.query(msg);
       //console.log("Server update success!");
     })
