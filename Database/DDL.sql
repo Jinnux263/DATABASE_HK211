@@ -106,6 +106,7 @@ ALTER TABLE SUPPORT
 					ON DELETE CASCADE ON UPDATE CASCADE,
 		CONSTRAINT FK_support_admin FOREIGN KEY (Admin_ID)
 					REFERENCES ADMINISTRATOR (User_ID)
+					-- ON DELETE SET NULL ON UPDATE SET NULL
 
 GO
 CREATE TABLE COURSE
@@ -151,9 +152,6 @@ CREATE TABLE ENROLL_COURSE
 	CONSTRAINT FK_enroll_course FOREIGN KEY (Course_ID)
 				REFERENCES COURSE (Course_ID)
 				ON DELETE CASCADE
-	-- O day nghia la khi xoa tai khoan thi xoa cac khoa hoc duoc dang ky boi nguoi do
-	-- nhung khi xoa mot khoa hoc thi cac tai khoan van khong bi xoa khoi khoa hoc da dang ky
-	-- hoi sai vi luc day minh dau con tham chieu duoc nua
 );
 
 GO

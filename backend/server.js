@@ -26,6 +26,20 @@ app.get("/api/courses", function (req, res) {
     });
 });
 
+app.get("/api/profile/:id", function (req, res) {
+  sql
+    .connect(config)
+    .then(() => {
+      var request = new sql.Request();
+      request.query(`SELECT * FROM USERTB WHERE User_ID = ${req.params.id}`, (err, result) => {
+        res.send(result.recordset[0]);
+      });
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+});
+
 app.get("/api/course/:id", function (req, res) {
   sql
     .connect(config)

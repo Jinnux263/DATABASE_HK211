@@ -47,11 +47,51 @@ BEGIN
     RETURN @@ROWCOUNT
 END;
 
-EXEC add_question_to_quiz @Course_ID = '5000001', @Lecture_Number = 1, @Quizz_ID = 2, @Ques_ID = 4, @Ques_Content = 'Is database hard?', @Ques_Answer = 'No if you learn carefully'
+EXEC add_question_to_quiz @Course_ID = '5000031', @Lecture_Number = 1, @Quizz_ID = 2, @Ques_ID = 4, @Ques_Content = 'Is database hard?', @Ques_Answer = 'No if you learn carefully'
 
 --SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
 
 -- Trigger1
+GO
+USE ASSIGNMENT2
+GO
+DROP TRIGGER IF EXISTS updateAdminSupport;
+
+GO
+CREATE TRIGGER updateAdminSupport
+ON ADMINISTRATOR
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT * FROM INSERTED
+    SELECT * FROM DELETED
+
+    -- SELECT * FROM SUPPORT
+    DECLARE @User_ID_New CHAR(7)
+    DECLARE @User_ID_Old CHAR(7)
+
+    SELECT @User_ID_Old = User_ID FROM DELETED
+    SELECT @User_ID_New = User_ID FROM INSERTED
+
+    UPDATE SUPPORT
+    SET SUPPORT.Admin_ID = @User_ID_New
+    WHERE SUPPORT.Admin_ID = @User_ID_Old;
+
+    -- SELECT * FROM SUPPORT
+END;
+
+-- UPDATE ADMINISTRATOR SET Admin_Type = 'Senior' WHERE User_ID = '1000005'
+-- UPDATE ADMINISTRATOR SET Admin_Type = 'Junior' WHERE User_ID = '1000005'
+
+UPDATE USERTB SET User_ID = '1000005' WHERE User_ID = '1000006'
+UPDATE USERTB SET User_ID = '1000006' WHERE User_ID = '1000005'
+SELECT * FROM ADMINISTRATOR
+SELECT * FROM USERTB
+SELECT * FROM SUPPORT
+DELETE FROM USERTB WHERE User_ID = '1000001';
+
+-- Trigger2
 -- GO
 -- DROP TRIGGER IF EXISTS enrollCourse;
 
@@ -69,36 +109,6 @@ EXEC add_question_to_quiz @Course_ID = '5000001', @Lecture_Number = 1, @Quizz_ID
 --         END;
 -- END;
 
--- Trigger2
-GO
-DROP TRIGGER IF EXISTS updateAdminSupport;
-
-GO
-CREATE TRIGGER updateAdminSupport
-ON ADMINISTRATOR
-AFTER UPDATE
-AS
-BEGIN
-    SET NOCOUNT ON;
-    -- SELECT * FROM INSERTED
-    -- SELECT * FROM DELETED
-
-    SELECT * FROM SUPPORT
-    DECLARE @User_ID CHAR(7)
-
-    SELECT @User_ID = User_ID FROM DELETED
-    UPDATE SUPPORT
-    SET Admin_ID = @User_ID
-    WHERE @User_ID = SUPPORT.User_ID;
-
-    SELECT * FROM SUPPORT
-END;
-
--- UPDATE ADMINISTRATOR SET Admin_Type = 'Senior' WHERE User_ID = '1000005'
--- UPDATE ADMINISTRATOR SET Admin_Type = 'Junior' WHERE User_ID = '1000005'
-
-UPDATE USERTB SET User_ID = '1000006' WHERE User_ID = '1000005'
-
 
 -- Trigger3
 -- GO
@@ -112,3 +122,25 @@ UPDATE USERTB SET User_ID = '1000006' WHERE User_ID = '1000005'
 -- BEGIN
 --     SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
 -- END;
+
+
+--Function
+GO
+USE ASSIGNMENT2
+GO
+DROP FUNCTION IF EXISTS dbo.TotalEnrollFee;
+GO
+CREATE FUNCTION dbo.TotalEnrollFee (@LearnerId CHAR(7), @time DATE = '2021-01-01')
+RETURNS INT
+WITH RETURNS NULL ON NULL INPUT
+AS BEGIN
+    IF NOT EXISTS (SELECT * FROM LEARNER WHERE User_ID = @LearnerId)
+        BEGIN
+            RETURN CAST ('[ERROR]: There is no user with this Id in Database, please try again!' AS INT)
+        END;
+    RETURN 2
+END;
+GO
+
+PRINT dbo.TotalEnrollFee('3000001', '2021-01-01')
+PRINT dbo.TotalEnrollFee('3000001', default)
