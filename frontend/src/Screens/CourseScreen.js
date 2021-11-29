@@ -14,7 +14,7 @@ const CourseScreen = (props) => {
     const { loading, error, course } = courseDetail;
 
     const params = useParams();
-    console.log(params)
+    //console.log(params)
     useEffect(() => {
         dispatch(listCourseDetail(params.id))
     }, [dispatch, params])

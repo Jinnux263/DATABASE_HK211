@@ -7,6 +7,7 @@ import HomeScreen from "./Screens/HomeScreen";
 import CourseScreen from "./Screens/CourseScreen";
 import ManageCourses from "./Screens/ManageCourses";
 import LoginScreen from "./Screens/LoginScreen";
+import ProfileScreen from './Screens/ProfileScreen';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/course/:id" element={<CourseScreen />} />
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/managecourses" element={<ManageCourses />} />
+            <Route path="/profile/:userId" element={<ProfileScreen />} />
           </Routes>
         </Container>
       </main>
