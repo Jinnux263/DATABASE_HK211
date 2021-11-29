@@ -1,10 +1,8 @@
 import React from "react";
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { ButtonGroup, Button, Table, Row, Col } from "react-bootstrap";
-import EditableRow from "../Components/editableRow";
-import ReadonlyRow from "../Components/readonlyRow";
 
 const ProfileScreen = () => {
   const params = useParams();
@@ -21,20 +19,9 @@ const ProfileScreen = () => {
   const [Education, setEducation] = useState("");
   const [showMyCourse, setShowMyCourse] = useState(true);
   const [courses,setCourses] = useState([])
-  const [formData, setFormData] = useState({
-    First_Name: "",
-    Last_Name: "",
-    Phone_Number: "",
-    Birth_Date: "",
-    Sex: "",
-    Address: "",
-    Country: "",
-    Email: "",
-    Education: "",
-  });
 
   const handleSubmit = (e) => {
-    console.log("Updateing")
+    //console.log("Updateing")
     e.preventDefault();
     if (First_Name && Last_Name && Phone_Number &&  Sex && Address && Country &&  Email &&  Education) {
       const item = {
@@ -53,7 +40,20 @@ const ProfileScreen = () => {
       fetchP();
     }
   };
-
+  const removeEnrolledCourse = (course) => {
+    //console.log(course)
+    axios
+      .post(`/api/myCourse/remove/${profile.User_ID}`, course)
+      .then((res) => {
+        if (res) {
+          this.reset();
+          alert(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   const sendNewProfile = (item) => {
     
     axios
@@ -73,7 +73,11 @@ const ProfileScreen = () => {
     setProfile(data);
   };
   useEffect(() => {
-    fetchP();
+    const fetchProfile = async () => {
+      const { data } = await axios.get(`/api/profile/${params.userId}`);
+      setProfile(data);
+    }
+    fetchProfile();
   }, [params]);
 
   useEffect(() => {
@@ -129,7 +133,7 @@ const ProfileScreen = () => {
                   <div className="col-md-6">Lastname: {profile.Last_Name}</div>
                 </div>
                 <div className="row mt-3 py-3">
-                  <div className="col-md-12 py-3">Gender: {profile.Sex == 'M' ? 'Male' : 'Female'}</div>
+                  <div className="col-md-12 py-3">Gender: {profile.Sex === 'M' ? 'Male' : 'Female'}</div>
                   <div className="col-md-12 py-3">
                     Birthday: {profile.Birth_Date}
                   </div>
@@ -173,7 +177,7 @@ const ProfileScreen = () => {
                     <td>{course.Date_enroll}</td>
                     <td>
                       <Row>
-                        <Col><Button>Remove</Button></Col>
+                        <Col><Button onClick ={() => removeEnrolledCourse(course)}>Remove</Button></Col>
                       </Row>
                     </td>
                   </tr>

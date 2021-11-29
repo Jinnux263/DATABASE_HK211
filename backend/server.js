@@ -74,8 +74,26 @@ app.get("/api/course/:id", function (req, res) {
 app.use(express.json());
 //app.use(express.urlencoded());
 
+app.post("/api/myCourse/remove/:id", function (req, res) {
+  //console.log("Server Updating...");
+  sql
+    .connect(config)
+    .then(() => {
+      var request = new sql.Request();
+      const items = req.body;
+      //console.log(items)
+      const msg = `DELETE FROM ENROLL_COURSE WHERE ENROLL_COURSE.Course_ID = '${items.Course_ID}' AND ENROLL_COURSE.Learner_ID = '${req.params.id}';`;
+      console.log(msg)
+      request.query(msg);
+      //console.log("Server update success!");
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+});
+
 app.post("/api/profile/update/:id", function (req, res) {
-  console.log("Server Updating...");
+  //console.log("Server Updating...");
   sql
     .connect(config)
     .then(() => {
@@ -85,7 +103,7 @@ app.post("/api/profile/update/:id", function (req, res) {
       const msg = `UPDATE USERTB SET First_Name = '${items.First_Name}', Last_Name = '${items.Last_Name}', Phone_Number = '${items.Phone_Number}', Birth_Date = '${items.Birth_Date}', Sex = '${items.Sex}', Country = '${items.Country}', Address = '${items.Address}', Email = '${items.Email}' WHERE USERTB.User_ID = '${req.params.id}'; UPDATE LEARNER SET Education_Degree = '${items.Education_Degree}' WHERE LEARNER.User_ID = '${req.params.id}';`;
       //console.log(msg)
       request.query(msg);
-      console.log("Server update success!");
+      //console.log("Server update success!");
     })
     .catch(function (err) {
       console.log(err);
@@ -93,7 +111,7 @@ app.post("/api/profile/update/:id", function (req, res) {
 });
 
 app.post("/api/courses/insert", function (req, res) {
-  console.log("Server Inserting...");
+  //console.log("Server Inserting...");
   sql
     .connect(config)
     .then(() => {
@@ -102,7 +120,7 @@ app.post("/api/courses/insert", function (req, res) {
       const msg = `INSERT INTO COURSE VALUES ('${items.Course_ID}','${items.Course_name}','${items.SPECIALIZATION}','${items.Level}','${items.Description}',${items.Fee},'${items.Admin_ID}');`;
       //console.log(msg)
       request.query(msg);
-      console.log("Server Insert success!");
+      //console.log("Server Insert success!");
     })
     .catch(function (err) {
       console.log(err);
@@ -111,7 +129,7 @@ app.post("/api/courses/insert", function (req, res) {
 
 
 app.post("/api/courses/update", function (req, res) {
-  console.log("Server Updating...");
+  //console.log("Server Updating...");
   sql
     .connect(config)
     .then(() => {
@@ -120,7 +138,7 @@ app.post("/api/courses/update", function (req, res) {
       const msg = `UPDATE COURSE SET Course_name = '${items.Course_name}', SPECIALIZATION = '${items.SPECIALIZATION}', Level = '${items.Level}', Description = '${items.Description}', Fee = ${items.Fee}, Admin_ID = '${items.Admin_ID}' WHERE Course_ID = '${items.Course_ID}';`;
       //console.log(msg)
       request.query(msg);
-      console.log("Server update success!");
+      //console.log("Server update success!");
     })
     .catch(function (err) {
       console.log(err);
