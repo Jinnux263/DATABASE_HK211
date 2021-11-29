@@ -31,7 +31,7 @@ app.get("/api/profile/:id", function (req, res) {
     .connect(config)
     .then(() => {
       var request = new sql.Request();
-      request.query(`SELECT * FROM USERTB WHERE User_ID = ${req.params.id}`, (err, result) => {
+      request.query(`SELECT USERTB.*, LEARNER.Education_Degree FROM USERTB, LEARNER WHERE LEARNER.User_ID = ${req.params.id} AND LEARNER.User_ID = USERTB.User_ID`, (err, result) => {
         res.send(result.recordset[0]);
       });
     })

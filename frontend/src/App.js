@@ -16,10 +16,10 @@ function App() {
       <main className="py-3">
         <Container>
           <Routes>
-            <Route path="/" element={<HomeScreen />} />
+            <Route path="/" element={<ManageCourses />} />
             <Route path="/course/:id" element={<CourseScreen />} />
-            <Route path="/login" element={<LoginScreen />} />
-            <Route path="/managecourses" element={<ManageCourses />} />
+            {/* <Route path="/login" element={<LoginScreen />} />
+            <Route path="/managecourses" element={<ManageCourses />} /> */}
             <Route path="/profile/:userId" element={<ProfileScreen />} />
           </Routes>
         </Container>
