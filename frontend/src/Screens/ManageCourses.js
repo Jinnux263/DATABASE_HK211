@@ -300,12 +300,8 @@ const ManageCourses = () => {
             onChange={handleAddCourse}
           />
         </div>
-        <div>
-          <button
-            type="submit"
-            className="btn btn-outline-primary btn-sm"
-            //onClick={insertCourse}
-          >
+        <div className="mt-4 text-center">
+          <button type="submit" className="btn btn-outline-primary btn-sm">
             Add
           </button>
         </div>
