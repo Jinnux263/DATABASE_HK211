@@ -12,7 +12,7 @@ const ReadonlyRow = ({ course, handleEditClick, handleDeleteClick }) => {
       <td>{course.Fee}</td>
       <td>{course.Admin_ID}</td>
       <td>
-        <div>
+        <div className="text-center">
           <button
             type="button"
             class="btn btn-outline-primary btn-sm"
@@ -21,7 +21,7 @@ const ReadonlyRow = ({ course, handleEditClick, handleDeleteClick }) => {
             Edit
           </button>
         </div>
-        <div>
+        <div className="mt-2 text-center">
           <button
             type="button"
             class="btn btn-outline-primary btn-sm"
