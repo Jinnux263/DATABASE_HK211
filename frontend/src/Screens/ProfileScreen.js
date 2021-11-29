@@ -1,24 +1,26 @@
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Breadcrumb, ButtonGroup, Button } from 'react-bootstrap'
+import { ButtonGroup, Button, Table, Row } from "react-bootstrap";
+import EditableRow from "../Components/editableRow";
+import ReadonlyRow from "../Components/readonlyRow";
 
 const ProfileScreen = () => {
   const params = useParams();
 
   const [profile, setProfile] = useState({});
-  const [First_Name, setFirst_Name] = useState('');
-  const [Last_Name, setLast_Name] = useState('');
-  const [Phone_Number, setPhone_Number] = useState('');
-  const [Birth_Date, setBirth_Date] = useState('');
-  const [Sex, setSex] = useState('');
-  const [Address, setAddress] = useState('');
-  const [Country, setCountry] = useState('');
-  const [Email, setEmail] = useState('');
-  const [Education, setEducation] = useState('');
-  const [showMyCourse, setShowMyCourse] = useState(true)
+  const [First_Name, setFirst_Name] = useState("");
+  const [Last_Name, setLast_Name] = useState("");
+  const [Phone_Number, setPhone_Number] = useState("");
+  const [Birth_Date, setBirth_Date] = useState("");
+  const [Sex, setSex] = useState("");
+  const [Address, setAddress] = useState("");
+  const [Country, setCountry] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Education, setEducation] = useState("");
+  const [showMyCourse, setShowMyCourse] = useState(true);
+  const [courses,setCourses] = useState([])
   const [formData, setFormData] = useState({
     First_Name: "",
     Last_Name: "",
@@ -28,44 +30,75 @@ const ProfileScreen = () => {
     Address: "",
     Country: "",
     Email: "",
-    Education: ''
+    Education: "",
   });
 
   const handleSubmit = (e) => {
+    console.log("Updateing")
     e.preventDefault();
-    const obj = {
-      First_Name: {First_Name},
-      Last_Name: {Last_Name},
-      Phone_Number: {Phone_Number},
-      Birth_Date: {Birth_Date},
-      Sex: {Sex},
-      Address: {Address},
-      Country: {Country},
-      Email: {Email},
-      Education: {Education}
+    if (First_Name && Last_Name && Phone_Number &&  Sex && Address && Country &&  Email &&  Education) {
+      const item = {
+        First_Name: First_Name,
+        Last_Name: Last_Name,
+        Phone_Number: Phone_Number,
+        Birth_Date: Birth_Date,
+        Sex: Sex ,
+        Address: Address,
+        Country: Country,
+        Email: Email,
+        Education_Degree: Education,
+      };
+      //console.log(item)
+      sendNewProfile(item);
+      fetchP();
     }
-    setFormData(obj)
   };
-  // console.log(Sex)
-  
-  //console.log(profile)
-  useEffect(() => {
-    const fetchP = async () => {
-      const { data } = await axios.get(`/api/profile/${params.userId}`);
-      setProfile(data);
-    };
 
+  const sendNewProfile = (item) => {
+    
+    axios
+      .post(`/api/profile/update/${profile.User_ID}`, item)
+      .then((res) => {
+        if (res) {
+          this.reset();
+          alert(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  const fetchP = async () => {
+    const { data } = await axios.get(`/api/profile/${params.userId}`);
+    setProfile(data);
+  };
+  useEffect(() => {
     fetchP();
   }, [params]);
 
+  useEffect(() => {
+    const fetchC = async () => {
+      const { data } = await axios.get(`/api/myCourses/${params.userId}`);
+      //console.log(data)
+      setCourses(data);
+    };
+
+    fetchC();
+  }, [params]);
+
+
   return (
     <>
-    <ButtonGroup aria-label="Basic example">
-      <Button variant="secondary" onClick={()=>setShowMyCourse(true)}>My course</Button>
-      <Button variant="secondary" onClick={()=>setShowMyCourse(false)}>Update Infor</Button>
-    </ButtonGroup>
-    {
-      showMyCourse ? (
+      <ButtonGroup aria-label="Basic example">
+        <Button variant="secondary" onClick={() => setShowMyCourse(true)}>
+          My Infor
+        </Button>
+        <Button variant="secondary" onClick={() => setShowMyCourse(false)}>
+          Update Infor
+        </Button>
+      </ButtonGroup>
+
+      {showMyCourse ? (
         <div className="container rounded bg-white mt-5 mb-5">
           <div className="row">
             <div className="col-md-3 border-right">
@@ -84,11 +117,71 @@ const ProfileScreen = () => {
               </div>
             </div>
             <div className="col-md-8 border-right">
+              <form className="p-3 py-5" onSubmit={(e) => handleSubmit(e)}>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h4 className="text-right">User Information</h4>
+                </div>
+                <div className="row mt-2 py-3">
+                  <div className="col-md-6">
+                    First name: {profile.First_Name}
+                  </div>
+                  <div className="col-md-6">Lastname: {profile.Last_Name}</div>
+                </div>
+                <div className="row mt-3 py-3">
+                  <div className="col-md-12 py-3">Gender: {profile.Sex == 'M' ? 'Male' : 'Female'}</div>
+                  <div className="col-md-12 py-3">
+                    Birthday: {profile.Birth_Date}
+                  </div>
+                  <div className="col-md-12 py-3">
+                    Phone Number: {profile.Phone_Number}
+                  </div>
+                  <div className="col-md-12 py-3">
+                    Address: {profile.Address}
+                  </div>
+                  <div className="col-md-12 py-3">
+                    Country: {profile.Country}
+                  </div>
+                  <div className="col-md-12 py-3">Email: {profile.Email}</div>
+                  <div className="col-md-12 py-3">
+                    Education: {profile.Education_Degree}
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
+
+          <div className='row'>
+            <Table className="table table-striped table-hover">
+              <thead className="table-dark">
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Specialization</th>
+                  <th>Level</th>
+                  <th>Date Enoll</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* {courses.map((course) => (
+                  // <Row key={course.Course_ID}>hi</Row>
+                  <Fragment key={course.Course_ID}>
+                    {editCourseID === course.id ? (
+                      <EditableRow
+                        editData={editData}
+                      />
+                    ) : (
+                      <ReadonlyRow
+                        course={course}
+                      />
+                    )}
+                  </Fragment>
+                ))} */}
+              </tbody>
+            </Table>
+          </div>
         </div>
-      ) :
-      <div className="container rounded bg-white mt-5 mb-5">
+      ) : (
+        <div className="container rounded bg-white mt-5 mb-5">
           <div className="row">
             <div className="col-md-3 border-right">
               <div className="d-flex flex-column align-items-center text-center p-3 py-5">
@@ -133,10 +226,14 @@ const ProfileScreen = () => {
                 <div className="row mt-3">
                   <div className="col-md-12">
                     <label className="labels">Gender</label>
-                    <select className="form-control" name="city" onChange = {
-                      (e) => {e.target.value === '1' ? setSex('M') : setSex('L')}
-                    }>
-                      <option selected>Select Gender</option>
+                    <select
+                      className="form-control"
+                      name="city"
+                      onChange={(e) => {
+                        e.target.value === "1" ? setSex("M") : setSex("L");
+                      }}
+                    >
+                      <option value="0" selected>Select Gender</option>
                       <option value="1">Male</option>
                       <option value="2">Female</option>
                     </select>
@@ -197,20 +294,20 @@ const ProfileScreen = () => {
                   </div>
                 </div>
                 <div className="mt-5 text-center">
-                  <button className="btn btn-primary profile-button" type="submit">
+                  <button
+                    className="btn btn-primary profile-button"
+                    type="submit"
+                  >
                     Save Profile
                   </button>
                 </div>
               </form>
             </div>
+          </div>
         </div>
-      </div>
-    }
-    
+      )}
     </>
   );
 };
 
 export default ProfileScreen;
-
-

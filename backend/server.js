@@ -12,6 +12,20 @@ app.get("/", function (req, res) {
   res.send("API is running...");
 });
 
+app.get("/api/myCourses/:id", function (req, res) {
+  sql
+    .connect(config)
+    .then(() => {
+      var request = new sql.Request();
+      request.query(`SELECT COURSE.Course_ID, COURSE.Course_name, COURSE.SPECIALIZATION, COURSE.Level, ENROLL_COURSE.Date_enroll FROM COURSE, ENROLL_COURSE WHERE COURSE.Course_ID = ENROLL_COURSE.Course_ID AND ENROLL_COURSE.Learner_ID = ${req.params.id}`, (err, result) => {
+        res.send(result.recordset);
+      });
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+});
+
 app.get("/api/courses", function (req, res) {
   sql
     .connect(config)
@@ -60,6 +74,24 @@ app.get("/api/course/:id", function (req, res) {
 app.use(express.json());
 //app.use(express.urlencoded());
 
+app.post("/api/profile/update/:id", function (req, res) {
+  console.log("Server Updating...");
+  sql
+    .connect(config)
+    .then(() => {
+      var request = new sql.Request();
+      const items = req.body;
+      //console.log(items)
+      const msg = `UPDATE USERTB SET First_Name = '${items.First_Name}', Last_Name = '${items.Last_Name}', Phone_Number = '${items.Phone_Number}', Birth_Date = '${items.Birth_Date}', Sex = '${items.Sex}', Country = '${items.Country}', Address = '${items.Address}', Email = '${items.Email}' WHERE USERTB.User_ID = '${req.params.id}'; UPDATE LEARNER SET Education_Degree = '${items.Education_Degree}' WHERE LEARNER.User_ID = '${req.params.id}';`;
+      //console.log(msg)
+      request.query(msg);
+      console.log("Server update success!");
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+});
+
 app.post("/api/courses/insert", function (req, res) {
   console.log("Server Inserting...");
   sql
@@ -76,6 +108,7 @@ app.post("/api/courses/insert", function (req, res) {
       console.log(err);
     });
 });
+
 
 app.post("/api/courses/update", function (req, res) {
   console.log("Server Updating...");

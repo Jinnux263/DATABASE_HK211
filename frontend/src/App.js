@@ -18,8 +18,6 @@ function App() {
           <Routes>
             <Route path="/" element={<ManageCourses />} />
             <Route path="/course/:id" element={<CourseScreen />} />
-            {/* <Route path="/login" element={<LoginScreen />} />
-            <Route path="/managecourses" element={<ManageCourses />} /> */}
             <Route path="/profile/:userId" element={<ProfileScreen />} />
           </Routes>
         </Container>
