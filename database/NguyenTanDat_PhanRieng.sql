@@ -12,6 +12,7 @@ SELECT USERTB.User_ID, USERTB.First_Name, USERTB.Last_Name, COUNT(*) AS TotalReq
 --4
 SELECT USERTB.User_ID, USERTB.Username, USERTB.First_Name, USERTB.Last_Name, UNIVERSITY.University_name, COUNT(*) AS TotalCourseCreated FROM USERTB, TEACHER, CREAT_COURSE, UNIVERSITY WHERE USERTB.User_ID = TEACHER.User_ID AND TEACHER.User_ID = CREAT_COURSE.Teacher_ID AND UNIVERSITY.University_ID = TEACHER.University_ID GROUP BY USERTB.User_ID, USERTB.Username, USERTB.First_Name, USERTB.Last_Name, UNIVERSITY.University_name HAVING COUNT(*) >= 2 ORDER BY COUNT(*) DESC
 
+
 --Procedure 1
 GO
 DROP PROCEDURE IF EXISTS TopEnroll;
@@ -48,45 +49,66 @@ END;
 
 EXEC add_question_to_quiz @Course_ID = '5000001', @Lecture_Number = 1, @Quizz_ID = 2, @Ques_ID = 4, @Ques_Content = 'Is database hard?', @Ques_Answer = 'No if you learn carefully'
 
-SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
+--SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
 
 -- Trigger1
-GO
-DROP TRIGGER IF EXISTS trigger_name;
+-- GO
+-- DROP TRIGGER IF EXISTS enrollCourse;
 
-GO
-CREATE TRIGGER trigger_name
-ON USERTB
-AFTER  INSERT, UPDATE, DELETE
-AS
-BEGIN
-    SET NOCOUNT ON;
-    SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
-END;
+-- GO
+-- CREATE TRIGGER enrollCourse
+-- ON ENROLL_COURSE
+-- FOR  INSERT
+-- AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     IF NOT EXISTS (SELECT * FROM ENROLL_COURSE WHERE ENROLL_COURSE.Course_ID = inserted.Course_ID)
+--         BEGIN
+--             PRINT ('[WARING]: This user have enrolled too many course to enroll more!')
+--             RETURN 0
+--         END;
+-- END;
 
 -- Trigger2
 GO
-DROP TRIGGER IF EXISTS deleteSupport;
+DROP TRIGGER IF EXISTS updateAdminSupport;
 
 GO
-CREATE TRIGGER deleteSupport
-ON USERTB
-AFTER DELETE
+CREATE TRIGGER updateAdminSupport
+ON ADMINISTRATOR
+AFTER UPDATE
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
+    -- SELECT * FROM INSERTED
+    -- SELECT * FROM DELETED
+
+    SELECT * FROM SUPPORT
+    DECLARE @User_ID CHAR(7)
+
+    SELECT @User_ID = User_ID FROM DELETED
+    UPDATE SUPPORT
+    SET Admin_ID = @User_ID
+    WHERE @User_ID = SUPPORT.User_ID;
+
+    SELECT * FROM SUPPORT
 END;
+
+-- UPDATE ADMINISTRATOR SET Admin_Type = 'Senior' WHERE User_ID = '1000005'
+-- UPDATE ADMINISTRATOR SET Admin_Type = 'Junior' WHERE User_ID = '1000005'
+
+UPDATE USERTB SET User_ID = '1000006' WHERE User_ID = '1000005'
+
 
 -- Trigger3
-GO
-DROP TRIGGER IF EXISTS trigger_name;
+-- GO
+-- DROP TRIGGER IF EXISTS trigger_name;
 
-GO
-CREATE TRIGGER trigger_name
-ON USERTB
-AFTER  INSERT, UPDATE, DELETE
-AS
-BEGIN
-    SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
-END;
+-- GO
+-- CREATE TRIGGER trigger_name
+-- ON USERTB
+-- AFTER  INSERT, UPDATE, DELETE
+-- AS
+-- BEGIN
+--     SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
+-- END;
