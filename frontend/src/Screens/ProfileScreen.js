@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState, Fragment } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { ButtonGroup, Button, Table, Row } from "react-bootstrap";
+import { ButtonGroup, Button, Table, Row, Col } from "react-bootstrap";
 import EditableRow from "../Components/editableRow";
 import ReadonlyRow from "../Components/readonlyRow";
 
@@ -86,6 +86,7 @@ const ProfileScreen = () => {
     fetchC();
   }, [params]);
 
+    //console.log(courses)
 
   return (
     <>
@@ -159,23 +160,25 @@ const ProfileScreen = () => {
                   <th>Specialization</th>
                   <th>Level</th>
                   <th>Date Enoll</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {/* {courses.map((course) => (
-                  // <Row key={course.Course_ID}>hi</Row>
-                  <Fragment key={course.Course_ID}>
-                    {editCourseID === course.id ? (
-                      <EditableRow
-                        editData={editData}
-                      />
-                    ) : (
-                      <ReadonlyRow
-                        course={course}
-                      />
-                    )}
-                  </Fragment>
-                ))} */}
+                {courses.map((course) => (
+                  <tr key={course.Course_ID}>
+                    <td>{course.Course_ID}</td>
+                    <td>{course.Course_name}</td>
+                    <td>{course.SPECIALIZATION}</td>
+                    <td>{course.Level}</td>
+                    <td>{course.Date_enroll}</td>
+                    <td>
+                      <Row>
+                        <Col><Button>Remove</Button></Col>
+                      </Row>
+                    </td>
+                  </tr>
+                ))}
+                
               </tbody>
             </Table>
           </div>
