@@ -74,16 +74,20 @@ const EditableRow = ({ editData, handleEditData, handleCancelClick }) => {
         />
       </td>
       <td>
-        <button type="submit" class="btn btn-outline-primary btn-sm">
-          Save
-        </button>
-        <button
-          type="button"
-          class="btn btn-outline-primary btn-sm"
-          onClick={handleCancelClick}
-        >
-          Cancel
-        </button>
+        <div className="text-center">
+          <button type="submit" class="btn btn-outline-primary btn-sm">
+            Save
+          </button>
+        </div>
+        <div className="mt-2 text-center">
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-sm"
+            onClick={handleCancelClick}
+          >
+            Cancel
+          </button>
+        </div>
       </td>
     </tr>
   );
