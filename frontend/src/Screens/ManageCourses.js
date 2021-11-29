@@ -1,9 +1,9 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { Table } from "react-bootstrap";
 import { nanoid } from "nanoid";
-import editableRow from "../Components/editableRow";
-import readonlyRow from "../Components/readonlyRow";
+import EditableRow from "../Components/editableRow";
+import ReadonlyRow from "../Components/readonlyRow";
 
 const ManageCourses = () => {
   const [courses, setCourse] = useState([]);
@@ -47,7 +47,7 @@ const ManageCourses = () => {
     const fieldName = event.target.getAttribute("name");
     const fieldValue = event.target.value;
 
-    const newFormData = { ...addCourse };
+    const newFormData = { ...editData };
     newFormData[fieldName] = fieldValue;
 
     setEditData(newFormData);
@@ -69,6 +69,65 @@ const ManageCourses = () => {
 
     const newCourses = [...courses, newCourse];
     insertCourse(newCourse);
+    setCourse(newCourses);
+  };
+
+  const handleEditDataSubmit = (event) => {
+    event.preventDefault();
+
+    const editedCourse = {
+      id: editCourseID,
+      Course_ID: editData.Course_ID,
+      Course_name: editData.Course_name,
+      SPECIALIZATION: editData.SPECIALIZATION,
+      Level: editData.Level,
+      Description: editData.Description,
+      Fee: editData.Fee,
+      Admin_ID: editData.Admin_ID,
+    };
+
+    const newCourses = [...courses];
+    const index = courses.findIndex(
+      (course) => course.Course_ID === editData.Course_ID
+    );
+
+    newCourses[index] = editedCourse;
+
+    updateCourse(editedCourse);
+    setCourse(newCourses);
+    setEditCourseID(null);
+  };
+
+  const handleEditClick = (event, course) => {
+    event.preventDefault();
+    setEditCourseID(course.id);
+
+    const courseValues = {
+      Course_ID: course.Course_ID,
+      Course_name: course.Course_name,
+      SPECIALIZATION: course.SPECIALIZATION,
+      Level: course.Level,
+      Description: course.Description,
+      Fee: course.Fee,
+      Admin_ID: course.Admin_ID,
+    };
+
+    setEditData(courseValues);
+  };
+
+  const handleCancelClick = () => {
+    setEditCourseID(null);
+  };
+
+  const handleDeleteClick = (ID) => {
+    const newCourses = [...courses];
+
+    const index = courses.findIndex((course) => course.Course_ID === ID);
+
+    newCourses.splice(index, 1);
+
+    deleteCourse(ID);
+
     setCourse(newCourses);
   };
 
@@ -96,94 +155,160 @@ const ManageCourses = () => {
       });
   };
 
+  const updateCourse = (item) => {
+    axios
+      .post("/api/courses/update", { item })
+      .then((res) => {
+        if (res) {
+          this.reset();
+          alert(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const deleteCourse = (ID) => {
+    axios
+      .post("/api/courses/delete", { ID })
+      .then((res) => {
+        if (res) {
+          this.reset();
+          alert(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div>
-      <Table className="table table-striped table-hover">
-        <thead className="table-dark">
-          <tr>
-            <th>Course ID</th>
-            <th>Course Name</th>
-            <th>Specialization</th>
-            <th>Level</th>
-            <th>Description</th>
-            <th>Fee</th>
-            <th>Admin ID</th>
-          </tr>
-        </thead>
-        <tbody>
-          {courses.map((course) => (
-            <tr key={course.Course_ID}>
-              <td>{course.Course_ID}</td>
-              <td>{course.Course_name}</td>
-              <td>{course.SPECIALIZATION}</td>
-              <td>{course.Level}</td>
-              <td>{course.Description}</td>
-              <td>{course.Fee}</td>
-              <td>{course.Admin_ID}</td>
+      <form onSubmit={handleEditDataSubmit}>
+        <Table className="table table-striped table-hover">
+          <thead className="table-dark">
+            <tr>
+              <th>Course ID</th>
+              <th>Course Name</th>
+              <th>Specialization</th>
+              <th>Level</th>
+              <th>Description</th>
+              <th>Fee</th>
+              <th>Admin ID</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {courses.map((course) => (
+              <Fragment>
+                {editCourseID === course.id ? (
+                  <EditableRow
+                    editData={editData}
+                    handleEditData={handleEditData}
+                    handleCancelClick={handleCancelClick}
+                  />
+                ) : (
+                  <ReadonlyRow
+                    course={course}
+                    handleEditClick={handleEditClick}
+                    handleDeleteClick={handleDeleteClick}
+                  />
+                )}
+              </Fragment>
+            ))}
+          </tbody>
+        </Table>
+      </form>
 
       <h2>Add new course</h2>
       <form onSubmit={handleAddCourseSubmit}>
-        <input
-          type="text"
-          name="Course_ID"
-          required="required"
-          placeholder="Enter course id"
-          onChange={handleAddCourse}
-        />
-        <input
-          type="text"
-          name="Course_name"
-          required="required"
-          placeholder="Enter course name"
-          onChange={handleAddCourse}
-        />
-        <input
-          type="text"
-          name="SPECIALIZATION"
-          required="required"
-          placeholder="Enter specialization"
-          onChange={handleAddCourse}
-        />
-        <input
-          type="text"
-          name="Level"
-          required="required"
-          placeholder="Enter level"
-          onChange={handleAddCourse}
-        />
-        <input
-          type="text"
-          name="Description"
-          required="required"
-          placeholder="Enter description"
-          onChange={handleAddCourse}
-        />
-        <input
-          type="text"
-          name="Fee"
-          required="required"
-          placeholder="Enter fee"
-          onChange={handleAddCourse}
-        />
-        <input
-          type="text"
-          name="Admin_ID"
-          required="required"
-          placeholder="Enter admin id"
-          onChange={handleAddCourse}
-        />
-
-        <button
-          type="submit"
-          className="btn btn-secondary btn-sm"
-          //onClick={insertCourse}
-        >
-          Add
-        </button>
+        <div>
+          <label class="form-label">Course ID</label>
+          <input
+            type="text"
+            name="Course_ID"
+            class="form-control"
+            required="required"
+            placeholder="Enter course id"
+            onChange={handleAddCourse}
+          />
+        </div>
+        <div>
+          <label class="form-label">Course name</label>
+          <input
+            type="text"
+            name="Course_name"
+            class="form-control"
+            required="required"
+            placeholder="Enter course name"
+            onChange={handleAddCourse}
+          />
+        </div>
+        <div>
+          <label class="form-label">Specialization</label>
+          <input
+            type="text"
+            name="SPECIALIZATION"
+            class="form-control"
+            required="required"
+            placeholder="Enter specialization"
+            onChange={handleAddCourse}
+          />
+        </div>
+        <div>
+          <label class="form-label">Level</label>
+          <input
+            type="text"
+            name="Level"
+            class="form-control"
+            required="required"
+            placeholder="Enter level"
+            onChange={handleAddCourse}
+          />
+        </div>
+        <div>
+          <label class="form-label">Description</label>
+          <input
+            type="text"
+            name="Description"
+            class="form-control"
+            required="required"
+            placeholder="Enter description"
+            onChange={handleAddCourse}
+          />
+        </div>
+        <div>
+          <label class="form-label">Fee</label>
+          <input
+            type="text"
+            name="Fee"
+            class="form-control"
+            required="required"
+            placeholder="Enter fee"
+            onChange={handleAddCourse}
+          />
+        </div>
+        <div>
+          <label class="form-label">Admin id</label>
+          <input
+            type="text"
+            name="Admin_ID"
+            class="form-control"
+            required="required"
+            placeholder="Enter admin id"
+            onChange={handleAddCourse}
+          />
+        </div>
+        <div>
+          <button
+            type="submit"
+            className="btn btn-outline-primary btn-sm"
+            //onClick={insertCourse}
+          >
+            Add
+          </button>
+        </div>
       </form>
     </div>
   );

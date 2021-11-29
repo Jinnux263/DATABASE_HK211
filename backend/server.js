@@ -63,6 +63,40 @@ app.post("/api/courses/insert", function (req, res) {
     });
 });
 
+app.post("/api/courses/update", function (req, res) {
+  console.log("Server Updating...");
+  sql
+    .connect(config)
+    .then(() => {
+      var request = new sql.Request();
+      const items = req.body.item;
+      const msg = `UPDATE COURSE SET Course_name = '${items.Course_name}', SPECIALIZATION = '${items.SPECIALIZATION}', Level = '${items.Level}', Description = '${items.Description}', Fee = ${items.Fee}, Admin_ID = '${items.Admin_ID}' WHERE Course_ID = '${items.Course_ID}';`;
+      //console.log(msg)
+      request.query(msg);
+      console.log("Server update success!");
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+});
+
+app.post("/api/courses/delete", function (req, res) {
+  console.log("Server Deleting...");
+  sql
+    .connect(config)
+    .then(() => {
+      var request = new sql.Request();
+      const items = req.body.ID;
+      const msg = `DELETE FROM COURSE WHERE Course_ID = '${items}';`;
+      //console.log(msg)
+      request.query(msg);
+      console.log("Server delete success!");
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+});
+
 const PORT = process.env.PORT || 3001;
 
 app.listen(

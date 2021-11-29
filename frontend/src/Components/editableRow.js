@@ -1,6 +1,6 @@
 import React from "react";
 
-const editableRow = ({ editData, handleEditData, handleCancelClick }) => {
+const EditableRow = ({ editData, handleEditData, handleCancelClick }) => {
   return (
     <tr>
       <td>
@@ -74,8 +74,14 @@ const editableRow = ({ editData, handleEditData, handleCancelClick }) => {
         />
       </td>
       <td>
-        <button type="submit">Save</button>
-        <button type="button" onClick={handleCancelClick}>
+        <button type="submit" class="btn btn-outline-primary btn-sm">
+          Save
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-primary btn-sm"
+          onClick={handleCancelClick}
+        >
           Cancel
         </button>
       </td>
@@ -83,4 +89,4 @@ const editableRow = ({ editData, handleEditData, handleCancelClick }) => {
   );
 };
 
-export default editableRow;
+export default EditableRow;

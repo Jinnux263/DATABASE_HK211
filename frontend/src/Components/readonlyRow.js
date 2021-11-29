@@ -1,6 +1,7 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 
-const readonlyRow = ({ course, handleEditClick, handleDeleteClick }) => {
+const ReadonlyRow = ({ course, handleEditClick, handleDeleteClick }) => {
   return (
     <tr>
       <td>{course.Course_ID}</td>
@@ -11,21 +12,27 @@ const readonlyRow = ({ course, handleEditClick, handleDeleteClick }) => {
       <td>{course.Fee}</td>
       <td>{course.Admin_ID}</td>
       <td>
-        <button
-          type="button"
-          onClick={(event) => handleEditClick(event, course)}
-        >
-          Edit
-        </button>
-        <button
-          type="button"
-          onClick={() => handleDeleteClick(course.Course_ID)}
-        >
-          Delete
-        </button>
+        <div>
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-sm"
+            onClick={(event) => handleEditClick(event, course)}
+          >
+            Edit
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-sm"
+            onClick={() => handleDeleteClick(course.Course_ID)}
+          >
+            Delete
+          </button>
+        </div>
       </td>
     </tr>
   );
 };
 
-export default readonlyRow;
+export default ReadonlyRow;
