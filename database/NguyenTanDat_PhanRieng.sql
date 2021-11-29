@@ -12,6 +12,7 @@ SELECT USERTB.User_ID, USERTB.First_Name, USERTB.Last_Name, COUNT(*) AS TotalReq
 --4
 SELECT USERTB.User_ID, USERTB.Username, USERTB.First_Name, USERTB.Last_Name, UNIVERSITY.University_name, COUNT(*) AS TotalCourseCreated FROM USERTB, TEACHER, CREAT_COURSE, UNIVERSITY WHERE USERTB.User_ID = TEACHER.User_ID AND TEACHER.User_ID = CREAT_COURSE.Teacher_ID AND UNIVERSITY.University_ID = TEACHER.University_ID GROUP BY USERTB.User_ID, USERTB.Username, USERTB.First_Name, USERTB.Last_Name, UNIVERSITY.University_name HAVING COUNT(*) >= 2 ORDER BY COUNT(*) DESC
 
+------------------------------------------------------------------------------------------------------------------------
 
 --Procedure 1
 GO
@@ -25,6 +26,8 @@ BEGIN
 END;
 
 EXEC TopEnroll @number = 10
+
+
 
 --Procedure 2
 GO
@@ -49,47 +52,47 @@ END;
 
 EXEC add_question_to_quiz @Course_ID = '5000031', @Lecture_Number = 1, @Quizz_ID = 2, @Ques_ID = 4, @Ques_Content = 'Is database hard?', @Ques_Answer = 'No if you learn carefully'
 
---SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
+------------------------------------------------------------------------------------------------------------------------
 
--- Trigger1
-GO
-USE ASSIGNMENT2
-GO
-DROP TRIGGER IF EXISTS updateAdminSupport;
+-- -- Trigger1
+-- GO
+-- USE ASSIGNMENT2
+-- GO
+-- DROP TRIGGER IF EXISTS updateAdminSupport;
 
-GO
-CREATE TRIGGER updateAdminSupport
-ON ADMINISTRATOR
-AFTER UPDATE
-AS
-BEGIN
-    SET NOCOUNT ON;
-    SELECT * FROM INSERTED
-    SELECT * FROM DELETED
+-- GO
+-- CREATE TRIGGER updateAdminSupport
+-- ON ADMINISTRATOR
+-- AFTER UPDATE
+-- AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT * FROM INSERTED
+--     SELECT * FROM DELETED
 
-    -- SELECT * FROM SUPPORT
-    DECLARE @User_ID_New CHAR(7)
-    DECLARE @User_ID_Old CHAR(7)
+--     -- SELECT * FROM SUPPORT
+--     DECLARE @User_ID_New CHAR(7)
+--     DECLARE @User_ID_Old CHAR(7)
 
-    SELECT @User_ID_Old = User_ID FROM DELETED
-    SELECT @User_ID_New = User_ID FROM INSERTED
+--     SELECT @User_ID_Old = User_ID FROM DELETED
+--     SELECT @User_ID_New = User_ID FROM INSERTED
 
-    UPDATE SUPPORT
-    SET SUPPORT.Admin_ID = @User_ID_New
-    WHERE SUPPORT.Admin_ID = @User_ID_Old;
+--     UPDATE SUPPORT
+--     SET SUPPORT.Admin_ID = @User_ID_New
+--     WHERE SUPPORT.Admin_ID = @User_ID_Old;
 
-    -- SELECT * FROM SUPPORT
-END;
+--     -- SELECT * FROM SUPPORT
+-- END;
 
 -- UPDATE ADMINISTRATOR SET Admin_Type = 'Senior' WHERE User_ID = '1000005'
 -- UPDATE ADMINISTRATOR SET Admin_Type = 'Junior' WHERE User_ID = '1000005'
 
-UPDATE USERTB SET User_ID = '1000005' WHERE User_ID = '1000006'
-UPDATE USERTB SET User_ID = '1000006' WHERE User_ID = '1000005'
-SELECT * FROM ADMINISTRATOR
-SELECT * FROM USERTB
-SELECT * FROM SUPPORT
-DELETE FROM USERTB WHERE User_ID = '1000001';
+-- UPDATE USERTB SET User_ID = '1000005' WHERE User_ID = '1000006'
+-- UPDATE USERTB SET User_ID = '1000006' WHERE User_ID = '1000005'
+-- SELECT * FROM ADMINISTRATOR
+-- SELECT * FROM USERTB
+-- SELECT * FROM SUPPORT
+-- DELETE FROM USERTB WHERE User_ID = '1000001';
 
 -- Trigger2
 -- GO
@@ -123,7 +126,7 @@ DELETE FROM USERTB WHERE User_ID = '1000001';
 --     SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
 -- END;
 
-
+------------------------------------------------------------------------------------------------------------------------
 --Function
 GO
 USE ASSIGNMENT2
@@ -138,9 +141,16 @@ AS BEGIN
         BEGIN
             RETURN CAST ('[ERROR]: There is no user with this Id in Database, please try again!' AS INT)
         END;
-    RETURN 2
+    DECLARE @ans FLOAT;
+    IF NOT EXISTS (SELECT * FROM COURSE, ENROLL_COURSE, LEARNER WHERE COURSE.Course_ID = ENROLL_COURSE.Course_ID AND LEARNER.User_ID = @LearnerId AND ENROLL_COURSE.Learner_ID = @LearnerId AND ENROLL_COURSE.Date_enroll > @time)
+        RETURN 0;
+
+    SELECT @ans = SUM(Fee) FROM COURSE, ENROLL_COURSE, LEARNER WHERE COURSE.Course_ID = ENROLL_COURSE.Course_ID AND LEARNER.User_ID = @LearnerId AND ENROLL_COURSE.Learner_ID = @LearnerId AND ENROLL_COURSE.Date_enroll > @time
+    RETURN @ans
 END;
 GO
 
-PRINT dbo.TotalEnrollFee('3000001', '2021-01-01')
-PRINT dbo.TotalEnrollFee('3000001', default)
+PRINT dbo.TotalEnrollFee('3000001', '2021-12-20')
+PRINT dbo.TotalEnrollFee('3000000', default)
+
+SELECT COURSE.Course_ID,Fee FROM COURSE, ENROLL_COURSE, LEARNER WHERE COURSE.Course_ID = ENROLL_COURSE.Course_ID AND LEARNER.User_ID = '3000001' AND ENROLL_COURSE.Learner_ID = '3000001'
