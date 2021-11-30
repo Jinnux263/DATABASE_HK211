@@ -25,7 +25,7 @@ BEGIN
     RETURN @@ROWCOUNT
 END;
 
-EXEC TopEnroll @number = 10
+-- EXEC TopEnroll @number = 10
 
 
 
@@ -50,7 +50,7 @@ BEGIN
     RETURN @@ROWCOUNT
 END;
 
-EXEC add_question_to_quiz @Course_ID = '5000001', @Lecture_Number = 1, @Quizz_ID = 2, @Ques_ID = 4, @Ques_Content = 'Is database hard?', @Ques_Answer = 'No if you learn carefully'
+-- EXEC add_question_to_quiz @Course_ID = '5000001', @Lecture_Number = 1, @Quizz_ID = 2, @Ques_ID = 4, @Ques_Content = 'Is database hard?', @Ques_Answer = 'No if you learn carefully'
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -85,11 +85,11 @@ BEGIN
         END;
 END;
 
-INSERT INTO USERTB VALUES ('3000044', 'Learner_44', 'Learner41', 'Jones','Newton', '1300000041', '2002-01-23', 'F','United Stated',' New York', 'Learner_41@gmail.com', 'Teacher')
+-- INSERT INTO USERTB VALUES ('3000044', 'Learner_44', 'Learner41', 'Jones','Newton', '1300000041', '2002-01-23', 'F','United Stated',' New York', 'Learner_41@gmail.com', 'Teacher')
 
-SELECT * FROM TEACHER
-SELECT * FROM LEARNER
-SELECT * FROM USERTB
+-- SELECT * FROM TEACHER
+-- SELECT * FROM LEARNER
+-- SELECT * FROM USERTB
 
 
 
@@ -139,30 +139,11 @@ BEGIN
     UPDATE SUPPORT SET Admin_ID = @insertedUser_ID WHERE Admin_ID IS NULL
 END;
 
-
-
--- UPDATE USERTB SET USERTB.User_ID = '3000030' WHERE USERTB.User_ID = '3000041'
--- UPDATE USERTB SET USERTB.User_ID = '1000004' WHERE USERTB.User_ID = '1000006'
-
--- UPDATE SUPPORT SET User_ID = NULL WHERE User_ID = '3000041'
--- UPDATE SUPPORT SET Admin_ID = NULL WHERE Admin_ID = '1000006'
-
--- UPDATE SUPPORT SET User_ID = '3000030' WHERE User_ID IS NULL
--- UPDATE SUPPORT SET Admin_ID = '1000004' WHERE Admin_ID IS NULL
-
 -- SELECT * FROM USERTB
 -- SELECT * FROM SUPPORT
 
--- UPDATE SUPPORT SET User_ID = NULL WHERE User_ID = '3000030'
--- UPDATE SUPPORT SET Admin_ID = NULL WHERE Admin_ID = '1000004'
-
 -- UPDATE USERTB SET USERTB.User_ID = '1000006' WHERE USERTB.User_ID = '1000004'
 -- UPDATE USERTB SET USERTB.User_ID = '3000041' WHERE USERTB.User_ID = '3000030'
-
--- UPDATE SUPPORT SET User_ID = '3000041' WHERE User_ID IS NULL
--- UPDATE SUPPORT SET Admin_ID = '1000006' WHERE Admin_ID IS NULL
-
-
 
 
 
@@ -184,16 +165,16 @@ BEGIN
     SELECT @deletedUser_ID = User_ID FROM DELETED;
 
     DELETE FROM SUPPORT WHERE User_ID = @deletedUser_ID;
-    UPDATE SUPPORT SET Admin_ID = NULL WHERE Admin_ID = @deletedUser_ID;
+    DELETE FROM SUPPORT WHERE Admin_ID = @deletedUser_ID;
 
     DELETE FROM USERTB WHERE User_ID = @deletedUser_ID;
 
 END;
-SELECT * FROM USERTB
-SELECT * FROM SUPPORT
+-- SELECT * FROM USERTB
+-- SELECT * FROM SUPPORT
 
-DELETE FROM USERTB WHERE User_ID = '2000010';
-DELETE FROM USERTB WHERE User_ID = '1000003';
+-- DELETE FROM USERTB WHERE User_ID = '2000010';
+-- DELETE FROM USERTB WHERE User_ID = '1000003';
 ------------------------------------------------------------------------------------------------------------------------
 --Function
 GO
@@ -218,6 +199,8 @@ AS BEGIN
 END;
 GO
 
-PRINT dbo.TotalEnrollFee('3000001', '2021-01-01')
-PRINT dbo.TotalEnrollFee('3000000', default)
-PRINT dbo.TotalEnrollFee('3000001', '2021-12-20')
+-- PRINT dbo.TotalEnrollFee('3000001', '2021-01-01')
+-- PRINT dbo.TotalEnrollFee('3000000', default)
+-- PRINT dbo.TotalEnrollFee('3000001', '2021-12-20')
+
+-----------------------------------------------------------------------------------------------------------------------

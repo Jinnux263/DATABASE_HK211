@@ -6,7 +6,6 @@ import { ButtonGroup, Button, Table, Row, Col } from "react-bootstrap";
 
 const ProfileScreen = () => {
   const params = useParams();
-
   const [profile, setProfile] = useState({});
   const [First_Name, setFirst_Name] = useState("");
   const [Last_Name, setLast_Name] = useState("");
@@ -19,7 +18,7 @@ const ProfileScreen = () => {
   const [Education, setEducation] = useState("");
   const [showMyCourse, setShowMyCourse] = useState(true);
   const [courses,setCourses] = useState([])
-
+  
   const handleSubmit = (e) => {
     //console.log("Updateing")
     e.preventDefault();
@@ -37,7 +36,8 @@ const ProfileScreen = () => {
       };
       //console.log(item)
       sendNewProfile(item);
-      fetchP();
+      setTimeout(() => {  fetchP(); setShowMyCourse(true)}, 500);
+      
     }
   };
   const removeEnrolledCourse = (course) => {
@@ -53,9 +53,17 @@ const ProfileScreen = () => {
       .catch((error) => {
         console.log(error);
       });
+      setTimeout(() => {  
+        const fetchC = async () => {
+          const { data } = await axios.get(`/api/myCourses/${params.userId}`);
+          //console.log(data)
+          setCourses(data);
+        };
+        fetchC();
+      }, 300);
   }
   const sendNewProfile = (item) => {
-    
+    console.log(`ok ${profile.User_ID}`)
     axios
       .post(`/api/profile/update/${profile.User_ID}`, item)
       .then((res) => {
@@ -89,7 +97,11 @@ const ProfileScreen = () => {
 
     fetchC();
   }, [params]);
-
+  
+  const getDate = () => {
+    const date = new Date(profile.Birth_Date);
+    return `${date.getDate()}-${date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`}-${date.getFullYear()}`;
+  }
     //console.log(courses)
 
   return (
@@ -126,16 +138,19 @@ const ProfileScreen = () => {
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <h4 className="text-right">User Information</h4>
                 </div>
-                <div className="row mt-2 py-3">
-                  <div className="col-md-6">
-                    First name: {profile.First_Name}
+                
+                <div className="row mt-3">
+                  <div className="row mt-2 py-3">
+                    <div className="col-md-6">
+                      First name: {profile.First_Name}
+                    </div>
+                    <div className="col-md-6">
+                      Lastname: {profile.Last_Name}
+                    </div>
                   </div>
-                  <div className="col-md-6">Lastname: {profile.Last_Name}</div>
-                </div>
-                <div className="row mt-3 py-3">
                   <div className="col-md-12 py-3">Gender: {profile.Sex === 'M' ? 'Male' : 'Female'}</div>
                   <div className="col-md-12 py-3">
-                    Birthday: {profile.Birth_Date}
+                    Birthday: {getDate()}
                   </div>
                   <div className="col-md-12 py-3">
                     Phone Number: {profile.Phone_Number}

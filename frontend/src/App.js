@@ -3,10 +3,8 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import { Container } from "react-bootstrap";
-import HomeScreen from "./Screens/HomeScreen";
 import CourseScreen from "./Screens/CourseScreen";
 import ManageCourses from "./Screens/ManageCourses";
-import LoginScreen from "./Screens/LoginScreen";
 import ProfileScreen from './Screens/ProfileScreen';
 
 function App() {
