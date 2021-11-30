@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { ButtonGroup, Button, Table, Row, Col } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 const ProfileScreen = () => {
   const params = useParams();
@@ -18,6 +19,7 @@ const ProfileScreen = () => {
   const [Education, setEducation] = useState("");
   const [showMyCourse, setShowMyCourse] = useState(true);
   const [courses,setCourses] = useState([])
+  const [learnerID, setLearnerID] = useState('')
   
   const handleSubmit = (e) => {
     //console.log("Updateing")
@@ -114,7 +116,25 @@ const ProfileScreen = () => {
           Update Infor
         </Button>
       </ButtonGroup>
-
+      {/* <div className="row mx-4 my-3">
+        <label className="labels">Learner id</label>
+      <div className="col-md-4">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Learner id"
+          onChange={(e) => setLearnerID(e.target.value)}
+        />
+        </div>
+        <div className="col-md-4">
+          <Row>
+            <Col>
+              <Link to={`/profile/3000001/${learnerID}`}><Button>Change learner</Button></Link>
+            </Col>
+          </Row>
+        </div>
+        
+      </div> */}
       {showMyCourse ? (
         <div className="container rounded bg-white mt-5 mb-5">
           <div className="row">
