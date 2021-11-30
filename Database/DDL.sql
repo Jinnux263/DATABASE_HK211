@@ -14,10 +14,10 @@ CREATE TABLE USERTB
 	Last_Name VARCHAR(15) NOT NULL,
 	Phone_Number CHAR(10),
 	Birth_Date DATE,
-	Sex VARCHAR(10) NOT NULL CHECK(Sex IN ('M','F','Other')),
+	Sex VARCHAR(10) NOT NULL CHECK(Sex IN ('M','F')),
 	Country VARCHAR(30),
 	Address VARCHAR(30),
-	Email VARCHAR(30) NOT NULL,
+	Email VARCHAR(30),
 	Account_Type VARCHAR(15) NOT NULL CHECK(Account_Type IN ('Administrator', 'Teacher', 'Learner'))
 );
 

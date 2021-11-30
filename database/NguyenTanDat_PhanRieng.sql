@@ -54,77 +54,93 @@ EXEC add_question_to_quiz @Course_ID = '5000031', @Lecture_Number = 1, @Quizz_ID
 
 ------------------------------------------------------------------------------------------------------------------------
 
--- -- Trigger1
--- GO
--- USE ASSIGNMENT2
--- GO
--- DROP TRIGGER IF EXISTS updateAdminSupport;
+-- Trigger1
+GO
+USE ASSIGNMENT2
+GO
+DROP TRIGGER IF EXISTS insertUserTrigger;
 
--- GO
--- CREATE TRIGGER updateAdminSupport
--- ON ADMINISTRATOR
--- AFTER UPDATE
--- AS
--- BEGIN
---     SET NOCOUNT ON;
---     SELECT * FROM INSERTED
---     SELECT * FROM DELETED
+GO
+CREATE TRIGGER insertUserTrigger
+ON USERTB
+INSTEAD OF INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT * FROM INSERTED
 
---     -- SELECT * FROM SUPPORT
---     DECLARE @User_ID_New CHAR(7)
---     DECLARE @User_ID_Old CHAR(7)
+    -- SELECT * FROM SUPPORT
+    DECLARE @User_ID_New CHAR(7)
+    DECLARE @insertedEmail VARCHAR(30)
 
---     SELECT @User_ID_Old = User_ID FROM DELETED
---     SELECT @User_ID_New = User_ID FROM INSERTED
+    SELECT @User_ID_New = User_ID FROM INSERTED
+    SELECT @insertedEmail = Email FROM INSERTED
 
---     UPDATE SUPPORT
---     SET SUPPORT.Admin_ID = @User_ID_New
---     WHERE SUPPORT.Admin_ID = @User_ID_Old;
+    -- SELECT * FROM SUPPORT
+END;
 
---     -- SELECT * FROM SUPPORT
--- END;
+INSERT INTO USERTB VALUES ('3000041','Learner_41','Learner41','Jones','Newton', '1300000041', '2002-01-23','F','United Stated','New York','Learner_41@gmail.com','Learner');
 
--- UPDATE ADMINISTRATOR SET Admin_Type = 'Senior' WHERE User_ID = '1000005'
--- UPDATE ADMINISTRATOR SET Admin_Type = 'Junior' WHERE User_ID = '1000005'
-
--- UPDATE USERTB SET User_ID = '1000005' WHERE User_ID = '1000006'
--- UPDATE USERTB SET User_ID = '1000006' WHERE User_ID = '1000005'
--- SELECT * FROM ADMINISTRATOR
--- SELECT * FROM USERTB
--- SELECT * FROM SUPPORT
--- DELETE FROM USERTB WHERE User_ID = '1000001';
+SELECT * FROM USERTB
 
 -- Trigger2
--- GO
--- DROP TRIGGER IF EXISTS enrollCourse;
+GO
+USE ASSIGNMENT2
+GO
+DROP TRIGGER IF EXISTS updateUserTrigger;
 
--- GO
--- CREATE TRIGGER enrollCourse
--- ON ENROLL_COURSE
--- FOR  INSERT
--- AS
--- BEGIN
---     SET NOCOUNT ON;
---     IF NOT EXISTS (SELECT * FROM ENROLL_COURSE WHERE ENROLL_COURSE.Course_ID = inserted.Course_ID)
---         BEGIN
---             PRINT ('[WARING]: This user have enrolled too many course to enroll more!')
---             RETURN 0
---         END;
--- END;
+GO
+CREATE TRIGGER updateUserTrigger
+ON USERTB
+INSTEAD OF UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT * FROM INSERTED
+
+    -- SELECT * FROM SUPPORT
+    DECLARE @User_ID_New CHAR(7)
+    DECLARE @insertedEmail VARCHAR(30)
+
+    SELECT @User_ID_New = User_ID FROM INSERTED
+    SELECT @insertedEmail = Email FROM INSERTED
+
+    -- SELECT * FROM SUPPORT
+END;
+
+INSERT INTO USERTB VALUES ('3000041','Learner_41','Learner41','Jones','Newton', '1300000041', '2002-01-23','F','United Stated','New York','Learner_41@gmail.com','Learner');
+
+SELECT * FROM USERTB
 
 
 -- Trigger3
--- GO
--- DROP TRIGGER IF EXISTS trigger_name;
+GO
+USE ASSIGNMENT2
+GO
+DROP TRIGGER IF EXISTS deleteUserTrigger;
 
--- GO
--- CREATE TRIGGER trigger_name
--- ON USERTB
--- AFTER  INSERT, UPDATE, DELETE
--- AS
--- BEGIN
---     SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID = 2
--- END;
+GO
+CREATE TRIGGER deleteUserTrigger
+ON USERTB
+INSTEAD OF DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT * FROM INSERTED
+
+    -- SELECT * FROM SUPPORT
+    DECLARE @User_ID_New CHAR(7)
+    DECLARE @insertedEmail VARCHAR(30)
+
+    SELECT @User_ID_New = User_ID FROM INSERTED
+    SELECT @insertedEmail = Email FROM INSERTED
+
+    -- SELECT * FROM SUPPORT
+END;
+
+INSERT INTO USERTB VALUES ('3000041','Learner_41','Learner41','Jones','Newton', '1300000041', '2002-01-23','F','United Stated','New York','Learner_41@gmail.com','Learner');
+
+SELECT * FROM USERTB
 
 ------------------------------------------------------------------------------------------------------------------------
 --Function
