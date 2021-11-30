@@ -50,7 +50,7 @@ BEGIN
     RETURN @@ROWCOUNT
 END;
 
-EXEC add_question_to_quiz @Course_ID = '5000031', @Lecture_Number = 1, @Quizz_ID = 2, @Ques_ID = 4, @Ques_Content = 'Is database hard?', @Ques_Answer = 'No if you learn carefully'
+EXEC add_question_to_quiz @Course_ID = '5000001', @Lecture_Number = 1, @Quizz_ID = 2, @Ques_ID = 4, @Ques_Content = 'Is database hard?', @Ques_Answer = 'No if you learn carefully'
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -58,49 +58,46 @@ EXEC add_question_to_quiz @Course_ID = '5000031', @Lecture_Number = 1, @Quizz_ID
 GO
 USE ASSIGNMENT2
 GO
-DROP TRIGGER IF EXISTS insertUserTrigger;
-
+DROP TRIGGER IF EXISTS insertUserTrigger
 GO
 CREATE TRIGGER insertUserTrigger
 ON USERTB
-INSTEAD OF INSERT
+AFTER INSERT
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT * FROM INSERTED
-
     DECLARE @insertedUser_ID CHAR(7)
-    DECLARE @insertedUsername VARCHAR(30)
-    DECLARE @insertedPassword CHAR(7)
-    DECLARE @insertedFirst_Name DATE
-    DECLARE @insertedLast_Name CHAR(7) 
-    DECLARE @insertedPhone_Number VARCHAR(30)
-    DECLARE @insertedBirthday DATE
-    DECLARE @insertedSex DATE
-    DECLARE @insertedCountry VARCHAR(30)
-    DECLARE @insertedAddress CHAR(7)
-    DECLARE @insertedEmail VARCHAR(30)
-    DECLARE @insertedAccount_Type DATE
+    DECLARE @insertedAccount_Type VARCHAR(15)
 
-    SELECT @insertedUser_ID = User_ID, @insertedUsername = Username, @insertedPassword = Password, @insertedFirst_Name = First_Name, @insertedLast_Name = Last_Name, @insertedPhone_Number = Phone_Number,  @insertedEmail = Email, @insertedBirthday = Birth_Date, @insertedCountry = Country, @insertedAddress = Address, @insertedAccount_Type = Account_Type  FROM INSERTED
+    SELECT @insertedUser_ID = User_ID, @insertedAccount_Type = Account_Type FROM INSERTED
 
-    -- INSERT INTO USERTB VALUES ('3000041','Learner_41','Learner41','Jones','Newton', '1300000041', '2002-01-23','F','United Stated','New York','Learner_41@gmail.com','Learner');
-
+    IF (@insertedAccount_Type = 'Administrator') 
+        BEGIN
+            INSERT INTO ADMINISTRATOR VALUES (@insertedUser_ID,'Junior')
+        END;
+    ELSE IF (@insertedAccount_Type = 'Teacher') 
+        BEGIN
+            INSERT INTO TEACHER VALUES (@insertedUser_ID, 'Assistant professor', NULL, NULL, NULL);
+        END;
+    ELSE IF (@insertedAccount_Type = 'Learner') 
+        BEGIN
+            INSERT INTO LEARNER VALUES (@insertedUser_ID, 'No Formal')
+        END;
 END;
 
-INSERT INTO USERTB VALUES ('3000041','Learner_41','Learner41','Jones','Newton', '1300000041', '2002-01-23','F','United Stated','New York','Learner_41@gmail.com','Learner');
+INSERT INTO USERTB VALUES ('3000044', 'Learner_44', 'Learner41', 'Jones','Newton', '1300000041', '2002-01-23', 'F','United Stated',' New York', 'Learner_41@gmail.com', 'Teacher')
 
-GO
-DELETE FROM USERTB WHERE User_ID = '3000041';
-
+SELECT * FROM TEACHER
+SELECT * FROM LEARNER
 SELECT * FROM USERTB
+
+
 
 -- Trigger2
 GO
 USE ASSIGNMENT2
 GO
 DROP TRIGGER IF EXISTS updateUserTrigger;
-
 GO
 CREATE TRIGGER updateUserTrigger
 ON USERTB
@@ -108,21 +105,65 @@ INSTEAD OF UPDATE
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT * FROM INSERTED
+    -- SELECT * FROM INSERTED
+    -- SELECT * FROM DELETED
 
-    -- SELECT * FROM SUPPORT
-    DECLARE @User_ID_New CHAR(7)
+    DECLARE @insertedUser_ID CHAR(7)
+    DECLARE @insertedUsername VARCHAR(30)
+    DECLARE @insertedPassword VARCHAR(20)
+    DECLARE @insertedFirst_Name VARCHAR(15)
+
+    DECLARE @insertedLast_Name VARCHAR(15) 
+    DECLARE @insertedPhone_Number CHAR(10)
+    DECLARE @insertedBirthday DATE
+    DECLARE @insertedSex CHAR(10)
+
+    DECLARE @insertedCountry VARCHAR(30)
+    DECLARE @insertedAddress VARCHAR(30)
     DECLARE @insertedEmail VARCHAR(30)
+    DECLARE @insertedAccount_Type VARCHAR(15)
 
-    SELECT @User_ID_New = User_ID FROM INSERTED
-    SELECT @insertedEmail = Email FROM INSERTED
+    DECLARE @insertedUser_IDOld VARCHAR(30)
 
-    -- SELECT * FROM SUPPORT
+    SELECT @insertedUser_ID = User_ID, @insertedUsername = Username, @insertedPassword = Password, @insertedFirst_Name = First_Name, @insertedLast_Name = Last_Name, @insertedPhone_Number = Phone_Number,  @insertedEmail = Email, @insertedBirthday = Birth_Date, @insertedCountry = Country, @insertedAddress = Address, @insertedAccount_Type = Account_Type, @insertedSex = Sex  FROM INSERTED;
+
+    SELECT @insertedUser_IDOld = User_ID FROM DELETED
+
+
+    UPDATE SUPPORT SET User_ID = NULL WHERE User_ID = @insertedUser_IDOld
+    UPDATE SUPPORT SET Admin_ID = NULL WHERE Admin_ID = @insertedUser_IDOld
+
+    UPDATE USERTB SET User_ID = @insertedUser_ID, Username = @insertedUsername, Password = @insertedPassword, First_Name = @insertedFirst_Name, Last_Name = @insertedLast_Name, Phone_Number = @insertedPhone_Number, Email = @insertedEmail, Birth_Date = @insertedBirthday, Country = @insertedCountry, Address = @insertedAddress, Account_Type = @insertedAccount_Type, Sex = @insertedSex  WHERE USERTB.User_ID = @insertedUser_IDOld
+
+    UPDATE SUPPORT SET User_ID = @insertedUser_ID WHERE User_ID IS NULL
+    UPDATE SUPPORT SET Admin_ID = @insertedUser_ID WHERE Admin_ID IS NULL
 END;
 
-INSERT INTO USERTB VALUES ('3000041','Learner_41','Learner41','Jones','Newton', '1300000041', '2002-01-23','F','United Stated','New York','Learner_41@gmail.com','Learner');
 
-SELECT * FROM USERTB
+
+-- UPDATE USERTB SET USERTB.User_ID = '3000030' WHERE USERTB.User_ID = '3000041'
+-- UPDATE USERTB SET USERTB.User_ID = '1000004' WHERE USERTB.User_ID = '1000006'
+
+-- UPDATE SUPPORT SET User_ID = NULL WHERE User_ID = '3000041'
+-- UPDATE SUPPORT SET Admin_ID = NULL WHERE Admin_ID = '1000006'
+
+-- UPDATE SUPPORT SET User_ID = '3000030' WHERE User_ID IS NULL
+-- UPDATE SUPPORT SET Admin_ID = '1000004' WHERE Admin_ID IS NULL
+
+-- SELECT * FROM USERTB
+-- SELECT * FROM SUPPORT
+
+-- UPDATE SUPPORT SET User_ID = NULL WHERE User_ID = '3000030'
+-- UPDATE SUPPORT SET Admin_ID = NULL WHERE Admin_ID = '1000004'
+
+-- UPDATE USERTB SET USERTB.User_ID = '1000006' WHERE USERTB.User_ID = '1000004'
+-- UPDATE USERTB SET USERTB.User_ID = '3000041' WHERE USERTB.User_ID = '3000030'
+
+-- UPDATE SUPPORT SET User_ID = '3000041' WHERE User_ID IS NULL
+-- UPDATE SUPPORT SET Admin_ID = '1000006' WHERE Admin_ID IS NULL
+
+
+
 
 
 -- Trigger3
@@ -130,7 +171,6 @@ GO
 USE ASSIGNMENT2
 GO
 DROP TRIGGER IF EXISTS deleteUserTrigger;
-
 GO
 CREATE TRIGGER deleteUserTrigger
 ON USERTB
@@ -138,22 +178,22 @@ INSTEAD OF DELETE
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT * FROM INSERTED
+    --SELECT * FROM DELETED
 
-    -- SELECT * FROM SUPPORT
-    DECLARE @User_ID_New CHAR(7)
-    DECLARE @insertedEmail VARCHAR(30)
+    DECLARE @deletedUser_ID CHAR(7)
+    SELECT @deletedUser_ID = User_ID FROM DELETED;
 
-    SELECT @User_ID_New = User_ID FROM INSERTED
-    SELECT @insertedEmail = Email FROM INSERTED
+    DELETE FROM SUPPORT WHERE User_ID = @deletedUser_ID;
+    UPDATE SUPPORT SET Admin_ID = NULL WHERE Admin_ID = @deletedUser_ID;
 
-    -- SELECT * FROM SUPPORT
+    DELETE FROM USERTB WHERE User_ID = @deletedUser_ID;
+
 END;
-
-INSERT INTO USERTB VALUES ('3000041','Learner_41','Learner41','Jones','Newton', '1300000041', '2002-01-23','F','United Stated','New York','Learner_41@gmail.com','Learner');
-
 SELECT * FROM USERTB
+SELECT * FROM SUPPORT
 
+DELETE FROM USERTB WHERE User_ID = '2000010';
+DELETE FROM USERTB WHERE User_ID = '1000003';
 ------------------------------------------------------------------------------------------------------------------------
 --Function
 GO
