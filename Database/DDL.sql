@@ -46,7 +46,7 @@ CREATE TABLE UNIVERSITY
 (
 	University_ID CHAR(7) PRIMARY KEY,
 	University_name VARCHAR(30) NOT NULL,
-	Email VARCHAR(30) NOT NULL,
+	Email VARCHAR(30),
 );
 
 GO
@@ -65,7 +65,7 @@ GO
 CREATE TABLE UNIVERSITY_PHONE_NUMBER
 (
 	University_ID CHAR(7),
-	Phone_Number CHAR(10) NOT NULL,
+	Phone_Number CHAR(10),
 	PRIMARY KEY (University_ID, Phone_Number),
 	CONSTRAINT FK_phone_uni FOREIGN KEY (University_ID)
 				REFERENCES UNIVERSITY (University_ID)
@@ -92,11 +92,11 @@ GO
 CREATE TABLE SUPPORT
 (
 	SupportID INT IDENTITY(1,1) PRIMARY KEY,
-	Requirement VARCHAR(255) NOT NULL,
+	Requirement VARCHAR(255),
 	Date_sent DATE,
 	Date_process DATE,
 	User_ID CHAR(7),
-	Admin_ID CHAR(7) NULL,
+	Admin_ID CHAR(7),
 );
 
 GO
@@ -112,9 +112,9 @@ GO
 CREATE TABLE COURSE
 (
 	Course_ID CHAR(7) PRIMARY KEY,
-	Course_name VARCHAR(30) NOT NULL,
+	Course_name VARCHAR(30),
 	SPECIALIZATION VARCHAR(30),
-	Level VARCHAR(15) CHECK(Level IN ('Introductory', 'Intermediate', 'Advanced')),
+	Level VARCHAR(15) NOT NULL CHECK(Level IN ('Introductory', 'Intermediate', 'Advanced')),
 	Description VARCHAR(255),
 	Fee FLOAT,
 	Admin_ID CHAR(7),
@@ -158,7 +158,7 @@ GO
 CREATE TABLE QUESTION
 (
 	Question_ID INT IDENTITY(1,1) PRIMARY KEY,
-	Question_content VARCHAR(255) NOT NULL,
+	Question_content VARCHAR(255),
 	Date_ask DATE,
 	Answer_content VARCHAR(255),
 	Date_answer DATE
@@ -168,7 +168,7 @@ GO
 CREATE TABLE LEARNER_ASK
 (
 	Learner_ID CHAR(7),
-	Question_ID INT NOT NULL,
+	Question_ID INT,
 	Course_ID CHAR(7) NOT NULL,
 	PRIMARY KEY (Learner_ID, Question_ID),
 	CONSTRAINT FK_ask_learner FOREIGN KEY (Learner_ID)
@@ -209,7 +209,7 @@ CREATE TABLE CERTIFICATE
 	Learner_ID CHAR(7) NOT NULL,
 	Course_ID CHAR(7) NOT NULL,
 	University_ID CHAR(7) NOT NULL,
-	Date_getted DATE NOT NULL,
+	Date_getted DATE,
 	Result VARCHAR(15) NOT NULL CHECK(Result IN ('Excellent', 'Good','Pass')),
 	Description VARCHAR(255),
 	CONSTRAINT FK_certi_learner FOREIGN KEY (Learner_ID)
@@ -228,8 +228,8 @@ CREATE TABLE LECTURE
 (
 	Course_ID CHAR(7),
 	Lecture_number INT,
-	Lecture_name VARCHAR(30) NOT NULL,
-	Lecture_content VARCHAR(255) NOT NULL,
+	Lecture_name VARCHAR(30),
+	Lecture_content VARCHAR(255),
 	PRIMARY KEY (Course_ID, Lecture_number),
 	CONSTRAINT FK_lecture_course FOREIGN KEY (Course_ID)
 				REFERENCES COURSE (Course_ID)
@@ -242,7 +242,7 @@ CREATE TABLE ATTACHMENT
 	Course_ID CHAR(7),
 	Lecture_number INT,
 	Att_ID INT,
-	Title VARCHAR(30) NOT NULL,
+	Title VARCHAR(30),
 	Type VARCHAR(30),
 	Content VARCHAR(255),
 	PRIMARY KEY (Course_ID, Lecture_number, Att_ID)
@@ -298,7 +298,7 @@ CREATE TABLE QUIZ
 	Course_ID CHAR(7),
 	Lecture_number INT,
 	Quiz_ID CHAR(7),
-	Description VARCHAR(255) NOT NULL,
+	Description VARCHAR(255),
 	PRIMARY KEY (Course_ID, Lecture_number, Quiz_ID)
 );
 
@@ -315,7 +315,7 @@ CREATE TABLE QUIZ_QUESTION
 	Lecture_number INT,
 	Quiz_ID CHAR(7),
 	Question_ID INT,
-	Question_content VARCHAR(255) NOT NULL,
+	Question_content VARCHAR(255),
 	Question_answer VARCHAR(255),
 	PRIMARY KEY (Course_ID, Lecture_number, Quiz_ID, Question_ID)
 );

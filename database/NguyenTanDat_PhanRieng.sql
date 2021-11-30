@@ -69,17 +69,29 @@ BEGIN
     SET NOCOUNT ON;
     SELECT * FROM INSERTED
 
-    -- SELECT * FROM SUPPORT
-    DECLARE @User_ID_New CHAR(7)
+    DECLARE @insertedUser_ID CHAR(7)
+    DECLARE @insertedUsername VARCHAR(30)
+    DECLARE @insertedPassword CHAR(7)
+    DECLARE @insertedFirst_Name DATE
+    DECLARE @insertedLast_Name CHAR(7) 
+    DECLARE @insertedPhone_Number VARCHAR(30)
+    DECLARE @insertedBirthday DATE
+    DECLARE @insertedSex DATE
+    DECLARE @insertedCountry VARCHAR(30)
+    DECLARE @insertedAddress CHAR(7)
     DECLARE @insertedEmail VARCHAR(30)
+    DECLARE @insertedAccount_Type DATE
 
-    SELECT @User_ID_New = User_ID FROM INSERTED
-    SELECT @insertedEmail = Email FROM INSERTED
+    SELECT @insertedUser_ID = User_ID, @insertedUsername = Username, @insertedPassword = Password, @insertedFirst_Name = First_Name, @insertedLast_Name = Last_Name, @insertedPhone_Number = Phone_Number,  @insertedEmail = Email, @insertedBirthday = Birth_Date, @insertedCountry = Country, @insertedAddress = Address, @insertedAccount_Type = Account_Type  FROM INSERTED
 
-    -- SELECT * FROM SUPPORT
+    -- INSERT INTO USERTB VALUES ('3000041','Learner_41','Learner41','Jones','Newton', '1300000041', '2002-01-23','F','United Stated','New York','Learner_41@gmail.com','Learner');
+
 END;
 
 INSERT INTO USERTB VALUES ('3000041','Learner_41','Learner41','Jones','Newton', '1300000041', '2002-01-23','F','United Stated','New York','Learner_41@gmail.com','Learner');
+
+GO
+DELETE FROM USERTB WHERE User_ID = '3000041';
 
 SELECT * FROM USERTB
 
