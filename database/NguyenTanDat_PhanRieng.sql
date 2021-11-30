@@ -1,4 +1,21 @@
 USE ASSIGNMENT2
+DROP INDEX IF EXISTS dbo.COURSE.Index_set_course;
+DROP INDEX IF EXISTS dbo.CREAT_COURSE.Index_create_course;
+DROP INDEX IF EXISTS dbo.LEARNER.Index_Learner;
+DROP INDEX IF EXISTS dbo.USERTB.Index_UserTB;
+DROP INDEX IF EXISTS dbo.TEACHER.Index_Teacher;
+DROP INDEX IF EXISTS dbo.CERTIFICATE.Index_certificate;
+GO
+create unique index Index_set_course on dbo.COURSE(Course_ID)
+create unique index Index_create_course on dbo.CREAT_COURSE(Teacher_ID, Course_ID)
+create unique index Index_Learner on dbo.LEARNER(User_ID)
+create unique index Index_UserTB on dbo.USERTB(User_ID)
+create unique index Index_Teacher on dbo.TEACHER(User_ID)
+create index Index_certificate on dbo.CERTIFICATE(Learner_ID, Course_ID)
+
+GO
+------------------------------------------------------------------------------------------------------------------------
+USE ASSIGNMENT2
 
 --1
 SELECT Quiz_ID, Description FROM LECTURE, QUIZ WHERE Lecture_Name = 'Why we program' AND LECTURE.Course_ID = QUIZ.Course_ID AND LECTURE.Lecture_number = QUIZ.Lecture_number ORDER BY Quiz_ID
