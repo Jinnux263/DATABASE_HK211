@@ -1,19 +1,3 @@
-USE ASSIGNMENT2
-DROP INDEX IF EXISTS dbo.COURSE.Index_set_course;
-DROP INDEX IF EXISTS dbo.CREAT_COURSE.Index_create_course;
-DROP INDEX IF EXISTS dbo.LEARNER.Index_Learner;
-DROP INDEX IF EXISTS dbo.USERTB.Index_UserTB;
-DROP INDEX IF EXISTS dbo.TEACHER.Index_Teacher;
-DROP INDEX IF EXISTS dbo.CERTIFICATE.Index_certificate;
-GO
-create unique index Index_set_course on dbo.COURSE(Course_ID)
-create unique index Index_create_course on dbo.CREAT_COURSE(Teacher_ID, Course_ID)
-create unique index Index_Learner on dbo.LEARNER(User_ID)
-create unique index Index_UserTB on dbo.USERTB(User_ID)
-create unique index Index_Teacher on dbo.TEACHER(User_ID)
-create index Index_certificate on dbo.CERTIFICATE(Learner_ID, Course_ID)
-
-GO
 ------------------------------------------------------------------------------------------------------------------------
 USE ASSIGNMENT2
 
@@ -42,7 +26,7 @@ BEGIN
     RETURN @@ROWCOUNT
 END;
 
--- EXEC TopEnroll @number = 10
+EXEC TopEnroll @number = 10
 
 
 
@@ -67,7 +51,9 @@ BEGIN
     RETURN @@ROWCOUNT
 END;
 
--- EXEC add_question_to_quiz @Course_ID = '5000001', @Lecture_Number = 1, @Quizz_ID = 2, @Ques_ID = 4, @Ques_Content = 'Is database hard?', @Ques_Answer = 'No if you learn carefully'
+EXEC add_question_to_quiz @Course_ID = '5000001', @Lecture_Number = 1, @Quizz_ID = 2, @Ques_ID = 4, @Ques_Content = 'Is database hard?', @Ques_Answer = 'No if you learn carefully'
+
+SELECT * FROM QUIZ_QUESTION WHERE Course_ID = '5000001' AND Lecture_Number = 1 AND Quiz_ID =2
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -102,11 +88,11 @@ BEGIN
         END;
 END;
 
--- INSERT INTO USERTB VALUES ('3000044', 'Learner_44', 'Learner41', 'Jones','Newton', '1300000041', '2002-01-23', 'F','United Stated',' New York', 'Learner_41@gmail.com', 'Teacher')
+INSERT INTO USERTB VALUES ('3000041', 'Learner_41', 'Learner41', 'Jones','Newton', '1300000041', '2002-01-23', 'F','United Stated',' New York', 'Learner_41@gmail.com', 'Learner')
 
--- SELECT * FROM TEACHER
--- SELECT * FROM LEARNER
--- SELECT * FROM USERTB
+SELECT * FROM TEACHER
+SELECT * FROM LEARNER
+SELECT * FROM USERTB
 
 
 
@@ -156,11 +142,11 @@ BEGIN
     UPDATE SUPPORT SET Admin_ID = @insertedUser_ID WHERE Admin_ID IS NULL
 END;
 
--- SELECT * FROM USERTB
--- SELECT * FROM SUPPORT
+SELECT * FROM USERTB
+SELECT * FROM SUPPORT
 
--- UPDATE USERTB SET USERTB.User_ID = '1000006' WHERE USERTB.User_ID = '1000004'
--- UPDATE USERTB SET USERTB.User_ID = '3000041' WHERE USERTB.User_ID = '3000030'
+UPDATE USERTB SET USERTB.User_ID = '1000004' WHERE USERTB.User_ID = '1000006'
+UPDATE USERTB SET USERTB.User_ID = '3000030' WHERE USERTB.User_ID = '3000041'
 
 
 
@@ -187,11 +173,11 @@ BEGIN
     DELETE FROM USERTB WHERE User_ID = @deletedUser_ID;
 
 END;
--- SELECT * FROM USERTB
--- SELECT * FROM SUPPORT
+SELECT * FROM USERTB
+SELECT * FROM SUPPORT
 
--- DELETE FROM USERTB WHERE User_ID = '2000010';
--- DELETE FROM USERTB WHERE User_ID = '1000003';
+DELETE FROM USERTB WHERE User_ID = '2000010';
+DELETE FROM USERTB WHERE User_ID = '1000003';
 ------------------------------------------------------------------------------------------------------------------------
 --Function
 GO
@@ -216,8 +202,8 @@ AS BEGIN
 END;
 GO
 
--- PRINT dbo.TotalEnrollFee('3000001', '2021-01-01')
--- PRINT dbo.TotalEnrollFee('3000000', default)
--- PRINT dbo.TotalEnrollFee('3000001', '2021-12-20')
+PRINT dbo.TotalEnrollFee('3000001', '2021-01-01')
+PRINT dbo.TotalEnrollFee('3000000', default)
+PRINT dbo.TotalEnrollFee('3000001', '2021-12-20')
 
 -----------------------------------------------------------------------------------------------------------------------
